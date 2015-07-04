@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	SetConsoleDisplayMode_ SCDM;
 	HWND hWnd;
 	wlist.next = NULL; // init wlist
-    int wcount = 0; // keep track off how many windows acted upon
+	int wcount = 0; // keep track of how many windows acted upon
 
 	//
 	// parse and load the commandline options into the args struct

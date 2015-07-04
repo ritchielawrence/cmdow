@@ -5,7 +5,7 @@ void ParseArgs(int argc, char *argv[], struct ARGS *a)
 	register int i;
 	int form1;	/* count of form1 options - list window(s) */
 	int form2;	/* count of form2 options - operation performed on all windows */
-	int form3;	/* count of form3 options - operation performed on a selected windows */
+	int form3;	/* count of form3 options - operation performed on selected windows */
 	int form4;	/* count of form4 options - run/open a program/file */
 	int form5;  /* count of form5 options - rename this console window 7*/
 	int fcount;	/* count of number of forms used */
@@ -60,7 +60,7 @@ void ParseArgs(int argc, char *argv[], struct ARGS *a)
 		else if(!lstrcmpi("/AT", argv[i])) PushTask(a->tasks, AT);
 		else if(!lstrcmpi("/FS", argv[i])) PushTask(a->tasks, FS);
 		else if(!lstrcmpi("/WM", argv[i])) PushTask(a->tasks, WM);
-        else if(!lstrcmpi("/DBM", argv[i])) a->actopts |= DONTBLAMEME;
+		else if(!lstrcmpi("/DBM", argv[i])) a->actopts |= DONTBLAMEME;
 		else if(!lstrcmpi("/MIN", argv[i])) PushTask(a->tasks, MIN);
 		else if(!lstrcmpi("/MAX", argv[i])) PushTask(a->tasks, MAX);
 		else if(!lstrcmpi("/RES", argv[i])) PushTask(a->tasks, RES);

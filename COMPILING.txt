@@ -1,5 +1,4 @@
-This software compiles without errors or warnings using a default installation of the CodeBlocks IDE (with the TDM-GCC toolset and
-MinGW runtime APIs), http://www.codeblocks.org/
+This software compiles without errors or warnings using a default installation of the CodeBlocks IDE (with the TDM-GCC toolset and MinGW runtime APIs), http://www.codeblocks.org/
 
 A CodeBlocks project file (cmdow.cbp) is included.
 

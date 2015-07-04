@@ -61,7 +61,7 @@ enum LISTOPTS {
 };
 
 enum ACTOPTS {
-    DONTBLAMEME = 0X0001            /* Allows actions to be performed on more than one windows */
+	DONTBLAMEME = 0x0001			/* Allows actions to be performed on more than one window */
 };
 
 struct ARGS {
@@ -73,7 +73,7 @@ struct ARGS {
 	HWND			myhwnd;			/* Handle of this console window */
 	enum TASK		tasks[MAXTASKS];/* Operations to perform on specified window */
 	int				listopts;		/* Options for listing windows */
-	int             actopts;        /* Options for actions upon selected windows */
+	int 			actopts;		/* Options for actions upon selected windows */
 	int				left, top;		/* Holds coords for moving window */
 	int				width, height;	/* Used for resizing a window */
 	char			*file;			/* File to open/run, used with /RUN */
@@ -88,7 +88,7 @@ struct WLIST {
 	HWND			parent;			/* Handle to parent of this window */
 	LONG			styles;			/* Styles of this window */
 	LONG			exstyles;		/* Extended styles of this window */
-	int			level;			/* Level (desktop=0, toplevel=1, child=2) */
+	int 			level;			/* Level (desktop=0, toplevel=1, child=2) */
 	DWORD			pid;			/* Process ID of this window */
 	char			*caption;		/* Caption of this window */
 	char			*image;			/* Name of executable */

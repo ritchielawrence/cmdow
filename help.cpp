@@ -16,16 +16,16 @@ void ShowHelp(char *cmd)
 		"  window  Window to list. Specify a window by its handle (in hex format, eg\n"
 		"          0x1A0142) or caption (window title). Caption is case insensitive.\n"
         "          Use asterisk before/after caption to match zero or more characters.\n"
-        "          Windows without captions can matched by their ClassName. Use double\n"
+		"          Windows without captions are matched by their ClassName. Use double\n"
         "          quotes for captions containing whitespace or control characters. The\n"
-        "          At symbol '@' may be used to refer to this window. ie 'CMDOW @ /HID'.\n"
+		"          At symbol '@' may be used to refer to this window. eg 'CMDOW @ /HID'.\n"
 		"  /T      List only the windows shown on the taskbar (these are typically\n"
 		"          visible level 1 windows that do not have an owner).\n");
 printf(
 		"  /B      Bare format. Does not print the field names when listing windows.\n"
 		"  /F      Full format. By default CMDOW truncates Image names to eight\n"
-		"          characters and Captions/ClassNames to 38 (10 if listing window\n"
-		"          position). Use this option to disable this feature.\n"
+		"          characters and Captions/ClassNames to fit under 80 characters.\n"
+		"          Use this option to disable this feature.\n"
 		"  /P      Shows window position, coords of top left corner of the window and\n"
 		"          its absolute width and height in pixels.\n\n");
 		printf(
@@ -38,7 +38,7 @@ printf(
 		"                 level 2+ are child windows.\n"
 		"  Pid            Process Id of the window (Task Manager also shows Pids).\n"
 		"  Window status  How the window is displayed (Minimized, Maximized, Restored,\n"
-		"                 Active, Inaative, Enabled, Disabled, Visible or Hidden).\n");
+		"                 Active, Inactive, Enabled, Disabled, Visible or Hidden).\n");
 		printf(
 		"  Left, Top      Coords of left top corner of the window relative to the\n"
 		"                 parent window. For top level windows this is the desktop, and\n"
@@ -110,15 +110,14 @@ printf(
 		"Some of these commands allow you to manipulate windows in ways not normally\n"
 		"possible. Improper use may cause unexpected results and system instability.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  CMDOW  window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]\n"
-		"         [/REN caption] [/MOV left top] [/SIZ width height] [/CLS] [/END]}\n\n"
+		"  CMDOW window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]}\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  window  Window to act on. Specify a window by its handle (in hex format, eg\n"
 		"          0x1A0142) or caption (window title). Caption is case insensitive.\n"
         "          Use asterisk before/after caption to match zero or more characters.\n"
         "          Windows without captions are matched by their ClassName. Use double\n"
         "          quotes for captions containing whitespace or control characters. The\n"
-        "          At symbol '@' may be used to refer to this window. ie 'CMDOW @ /HID'.\n"
+		"          At symbol '@' may be used to refer to this window. eg 'CMDOW @ /HID'.\n"
 		"  /ACT    Activates the specified window. It's possible to activate a hidden\n"
 		"          and/or disabled window (although doing so will not make it visible or\n"
 		"          enabled). If a minimized window is activated, it remains minimized.\n");
@@ -144,7 +143,7 @@ printf(
 		"          the size and position it was before it was maximized.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  If more than one window matches the specified caption, CMDOW only acts on the\n"
-		"  first one. To override this, add the /DBM (Don't Blame Me) switch - DANGEROUS.\n"
+		"  first one. To override this add the /DBM (Don't Blame Me) switch - DANGEROUS.\n"
 		"  Multiple actions are performed in order, from left to right. Eg:-\n\n"
 
 		"    CMDOW 0x0E0144 /hid /ren \"10%% complete\" /mov 0 0 /siz 300 100 /act /vis\n");
@@ -171,33 +170,32 @@ printf(
 		"Some of these commands allow you to manipulate windows in ways not normally\n"
 		"possible. Improper use may cause unexpected results and system instability.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  CMDOW handle {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]\n"
-		"          [/TOP] [/NOT] [/REN newcaption] [/MOV left top] [/SIZ width height]\n"
-		"          [/CLS] [/END]}\n\n"
+		"  CMDOW window {[/REN newcaption] [/TOP] [/NOT] [/MOV left top]\n"
+		"        [/SIZ width height] [/CLS] [/END]}\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  window  Window to act on. Specify a window by its handle (in hex format, eg\n"
 		"          0x1A0142) or caption (window title). Caption is case insensitive.\n"
         "          Use asterisk before/after caption to match zero or more characters.\n"
         "          Windows without captions are matched by their ClassName. Use double\n"
         "          quotes for captions containing whitespace or control characters. The\n"
-        "          At symbol '@' may be used to refer to this window. ie 'CMDOW @ /HID'.\n"
+		"          At symbol '@' may be used to refer to this window. eg 'CMDOW @ /HID'.\n"
 		"  /REN    Renames the caption of the specified window to the caption specified\n"
 		"          after /REN. Use double quotes for captions containing whitespace.\n");
-		printf(
-		"  /MOV    Moves the specified window. The left and top arguments specify the\n"
-		"          new position of the left top corner of the window. For level one\n"
-		"          windows this relative to the desktop, and for child windows this is\n"
-		"          relative to its parent window. Level one windows can be moved off the\n"
-		"          screen using negative coords or coords greater than the desktop size.\n"
-		"          You should not move a minimized or maximized window without first\n"
-		"          restoring it.\n");
 		printf(
 		"  /TOP    Makes the specified window always on top. It will remain on top even\n"
 		"          when another window is activated. If two or more windows have this\n"
 		"          attribute set, the topmost window will be that which had the\n"
 		"          attribute set first.\n"
 		"  /NOT    Makes window not always on top. This is the normal setting for most\n"
-		"          windows.\n"
+		"          windows.\n");
+		printf(
+		"  /MOV    Moves the specified window. The left and top arguments specify the\n"
+		"          new position of the left top corner of the window. For level one\n"
+		"          windows this is relative to the desktop, and for child windows this\n"
+		"          is relative to its parent window. Level one windows can be moved off\n"
+		"          the screen using negative coords or coords greater than the desktop\n"
+		"          size. You should not move a minimized or maximized window without\n"
+		"          first restoring it.\n"
 		"  /SIZ    Resizes the specified window. The width and height arguments specify\n"
 		"          the new absolute width and height. In general, windows cannot be made\n"
 		"          smaller using /SIZ than they could if using conventional methods. You\n"
@@ -205,14 +203,14 @@ printf(
 		"          restoring it.\n");
 		printf(
 		"  /CLS    Politely asks the specified window to close. Most applications will\n"
-		"          repsond to this request, although some may display a message box\n"
+		"          respond to this request, although some may display a message box\n"
 		"          asking you what to do with unsaved work.\n"
 		"  /END    Kills the process associated with the specified window, the result is\n"
 		"          all windows with the same Pid are also killed. Use very carefully.\n\n");
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		printf(
 		"  If more than one window matches the specified caption, CMDOW only acts on the\n"
-		"  first one. To override this, add the /DBM (Don't Blame Me) switch - DANGEROUS.\n"
+		"  first one. To override this add the /DBM (Don't Blame Me) switch - DANGEROUS.\n"
 		"  Multiple actions are performed in order, from left to right. Eg:-\n\n"
 
 		"    CMDOW 0x0E0144 /hid /ren \"10%% complete\" /mov 0 0 /siz 300 100 /act /vis\n");
@@ -226,17 +224,17 @@ printf(
 			(!lstrcmpi("/args", cmd))) {
 		printf(
 		"This form of CMDOW executes the specified file or opens it using the\n"
-		"the application associated with the filename extension.\n\n"
+		"application associated with the filename extension.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  CMDOW /RUN [state] file [args]\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  /RUN    Executes the specified file if possible, otherwise opens it using the\n"
-		"          the application associated with the filename extension.\n"
-		"  state   Requests how the applications window is initially displayed. Use /MIN\n"
-		"          for minimized, /MAX for maximized and /HID for hidden. If omitted the\n"
-		"          application is started in its default show state. Some applications\n"
-		"          ignore this, use CMDOW to alter the window state after the\n"
-		"          application has started.\n");
+		"          application associated with the filename extension.\n"
+		"  state   Requests how the application's window is initially displayed. Use\n"
+		"          /MIN for minimized, /MAX for maximized and /HID for hidden. If\n"
+		"          omitted the application is started in its default show state. Some\n"
+		"          applications ignore this, use CMDOW to alter the window state after\n"
+		"          the application has started.\n");
 		printf(
 		"  file    File to execute/open. Use double quotes if filename contains spaces.\n"
 		"  args    Optional arguments passed on to the application. Specify any args\n"
@@ -259,13 +257,13 @@ printf(
 	}
 	else {
 		printf(
-		"CMDOW [Version 1.4.7] Win32 Commandline Window Utility for NT4/2000/XP/7.\n"
+		"CMDOW [Version 1.4.8] Win32 Commandline Window Utility for NT4/2000/XP/7.\n"
 		"(C) Copyright 2001-2014 Ritchie Lawrence, http://www.commandline.co.uk.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  CMDOW [window | /T] [/B] [/F] [/P]\n"
 		"  CMDOW /TH | /TV | /MA | /CW | /UW | /AT | /FS | /WM\n"
 		"  CMDOW window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]\n"
-		"        [/TOP] [/NOT] [/REN caption] [/MOV left top] [/SIZ width height] [/CLS]\n"
+		"        [/REN caption] [/TOP] [/NOT] [/MOV left top] [/SIZ width height] [/CLS]\n"
 		"        [/END]}\n"
 		"  CMDOW /RUN [state] file [args]\n\n");
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -278,7 +276,7 @@ printf(
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  /TH     Tile windows horizontally.    /TV     Tile windows vertically.\n"
 		"  /MA     Minimize all windows.         /CW     Cascade windows.\n"
-		"  /UW     Undo tile/minimize/cascade.   /AT     Intelligent [Alt]-[Tab]\n"
+		"  /UW     Undo tile/minimize/cascade.   /AT     Intelligent [Alt]-[Tab].\n"
 		"  /FS     Switch to full screen mode.   /WM     Switch to window mode.\n\n");
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		printf(

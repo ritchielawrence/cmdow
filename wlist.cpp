@@ -1,7 +1,10 @@
 #include "header.h"
 
-static int max_level, max_level_len;
-static int max_image_len;
+static HWND  max_handle;
+static int	 max_level;
+static DWORD max_pid;
+static int	 len_handle, len_level, len_pid, len_image;
+static int	 len_begin;
 
 //+---------------------------------------------------------------------------
 // Function: GetMyHandle
@@ -39,8 +42,6 @@ void GetWindowList(struct WLIST *w)
 {
 	GetWindowInf(GetDesktopWindow(), w);
 	EnumWindows( (WNDENUMPROC) GetWindowListProc, (LPARAM) w);
-
-	max_level_len = (max_level > 99) ? 3 : (max_level > 9) ? 2 : 1;
 }
 
 //+---------------------------------------------------------------------------
@@ -147,7 +148,6 @@ BOOL GetWindowInf(HWND hwnd, struct WLIST *w)
 			w->level++;
 			parent = GetParent(parent);
 		}
-		if (max_level < w->level) max_level = w->level;
 	}
 
 	//
@@ -179,8 +179,6 @@ BOOL GetWindowInf(HWND hwnd, struct WLIST *w)
 	// get the name of the executable that created the window
 	//
 	w->image = GetImageName(w->pid);
-	len = lstrlen(w->image);
-	if (max_image_len < len) max_image_len = len;
 
 	//
 	// Get the window caption if it has one, otherwise use the window's classname
@@ -200,17 +198,44 @@ BOOL GetWindowInf(HWND hwnd, struct WLIST *w)
 	return TRUE;
 }
 
+static void LstWinLen(struct WLIST *w, BOOL tb)
+{
+	max_handle = 0;
+	max_level = max_pid = len_image = 0;
+	while(w) {
+		if (!tb || IsTaskbarWindow(w)) {
+			if (max_handle < w->hwnd) max_handle = w->hwnd;
+			if (max_level < w->level) max_level = w->level;
+			if (max_pid < w->pid) max_pid = w->pid;
+			int len = lstrlen(w->image);
+			if (len_image < len) len_image = len;
+		}
+		w = w->next;
+	}
+	len_handle = (DWORD_PTR)max_handle > 0xFFFFFFF ? 8 :
+				 (DWORD_PTR)max_handle > 0xFFFFFF ? 7 : 6;
+	len_level = (max_level > 99) ? 3 : (max_level > 9) ? 2 : 1;
+	len_pid = (max_pid > 9999) ? 5 : 4;
+	len_begin = 2 + len_handle + 1 + len_level + 1 + len_pid + 1 + 16;
+	if (len_image < 8) len_image = 8;
+}
+
 void PrintWindowInfHeadings(BOOL showpos, BOOL fullcapt)
 {
-	printf("Handle    %*s%*s -Window status- ",
-		   max_level_len + 1, "Lev",
-		   max_level_len == 1 ? 4 : 5, "Pid");
+	printf("%-*s%*s%*s -Window status- ",
+		   len_handle + 2, "Handle",
+		   len_level + 1, "Lev",
+		   len_pid + (len_level != 1), "Pid");
 	//
 	// if showing window position and size, then print their headings
 	//
-	if(showpos) printf("  Left    Top  Width Height ");
+	if(showpos) {
+		printf("  Left    Top  Width Height ");
+		len_begin += 28;
+	}
 
-	printf("%-*s Caption\n", fullcapt ? max_image_len : 8, "Image");
+	printf("%-*sCaption\n", fullcapt ? len_image + 1 :
+							showpos && len_pid == 5 ? 8 : 9, "Image");
 }
 
 void LstWin(struct WLIST *w, struct ARGS *a)
@@ -218,7 +243,10 @@ void LstWin(struct WLIST *w, struct ARGS *a)
 	static int headings;
 	const char *MinMaxRes, *ActiveInactive, *VisibleHidden, *EnabledDisabled;
 
-	if( (!headings++) && (!(a->listopts & BARE)) ) PrintWindowInfHeadings(a->listopts & SHOWPOS, a->listopts & FULLCAPT);
+	if( (!headings++) ) {
+		LstWinLen(w, a->listopts & SHOWTB);
+		if( !(a->listopts & BARE) ) PrintWindowInfHeadings(a->listopts & SHOWPOS, a->listopts & FULLCAPT);
+	}
 
 	if(a->listopts & SHOWTB)
 		if(!IsTaskbarWindow(w)) return;
@@ -231,21 +259,20 @@ void LstWin(struct WLIST *w, struct ARGS *a)
 	VisibleHidden	= (w->styles & WS_VISIBLE)  ? "Vis" : "Hid";
 	EnabledDisabled = (w->styles & WS_DISABLED) ? "Dis" : "Ena";
 
-	printf("0x%08lX %*i %4lu %s %s %s %s ",
-	       (unsigned long) w->hwnd,
-		   max_level_len, w->level,
-	       (unsigned long) w->pid,
+	printf("0x%.*lX %*i %*lu %s %s %s %s ",
+		   len_handle, (unsigned long) w->hwnd,
+		   len_level, w->level,
+		   len_pid, (unsigned long) w->pid,
 	       MinMaxRes, ActiveInactive, EnabledDisabled, VisibleHidden);
 	if(a->listopts & SHOWPOS) {
 		printf("%6d %6d %6d %6d ", w->left, w->top, w->width, w->height);
 	}
 	if(a->listopts & FULLCAPT) {
-		printf("%-*s %s\n", max_image_len, w->image, w->caption);
+		printf("%-*s %s\n", len_image, w->image, w->caption);
 	}
 	else {
 		printf("%-8.8s %.*s\n",
-			   w->image,
-			   (a->listopts & SHOWPOS ? 8 : 36) - max_level_len + 1, w->caption);
+			   w->image, 79 - 9 - len_begin, w->caption);
 	}
 }
 
