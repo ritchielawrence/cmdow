@@ -1,5 +1,8 @@
 #include "header.h"
 
+static int max_level, max_level_len;
+static int max_image_len;
+
 //+---------------------------------------------------------------------------
 // Function: GetMyHandle
 //
@@ -14,53 +17,7 @@
 //----------------------------------------------------------------------------
 HWND GetMyHandle(void)
 {
-	HWND h = NULL;
-	int i = 0;
-
-	#define MY_BUFSIZE 1024				/* Buffer size for console window titles */
-	#define MAX_WAIT 40					/* Time to allow window to be found, millisecs */
-	char TempTitle[MY_BUFSIZE];			/* Contains fabricated window title */
-	char OriginalTitle[MY_BUFSIZE];		/* Contains original window title */
-	char TempBuf[10];
-	char spaces50[] = "                                                  "; /* literally 50 spaces */
-
-	//
-	// Save the current console title. If function fails (title is null) then
-	// init OriginalTitle with a ZLS
-	//
-	if(!GetConsoleTitle(OriginalTitle, MY_BUFSIZE)) lstrcpy(OriginalTitle, "");
-
-	//
-	// Create a new title by appending a load of spaces, and a 'unique' value to existing title
-	// The spaces prevent the title change from being seen by user
-	//
-	lstrcpy(TempTitle, OriginalTitle);
-	lstrcat(TempTitle, spaces50);
-	lstrcat(TempTitle, spaces50);
-	lstrcat(TempTitle, spaces50);
-	lstrcat(TempTitle, spaces50);
-	lstrcat(TempTitle, _ltoa(GetTickCount(), TempBuf, 10));
-	lstrcat(TempTitle, _ltoa(GetCurrentProcessId(), TempBuf, 10));
-
-	//
-	// Now change the console title to the fabricated title
-	//
-	SetConsoleTitle(TempTitle);
-
-	//
-	// Search for a window with the fabricated title
-	//
-	while(i < MAX_WAIT) {
-		Sleep(5);
-		if( (h = FindWindow(NULL, TempTitle)) ) break;
-		i+=5;
-	}
-
-	//
-	// Restore original title
-	//
-	SetConsoleTitle(OriginalTitle);
-	return h;
+	return GetConsoleWindow();
 }
 
 //+---------------------------------------------------------------------------
@@ -82,6 +39,8 @@ void GetWindowList(struct WLIST *w)
 {
 	GetWindowInf(GetDesktopWindow(), w);
 	EnumWindows( (WNDENUMPROC) GetWindowListProc, (LPARAM) w);
+
+	max_level_len = (max_level > 99) ? 3 : (max_level > 9) ? 2 : 1;
 }
 
 //+---------------------------------------------------------------------------
@@ -152,7 +111,7 @@ BOOL CALLBACK GetWindowListProc(HWND hwnd, LPARAM wptr)
 //----------------------------------------------------------------------------
 BOOL GetWindowInf(HWND hwnd, struct WLIST *w)
 {
-	#define MAX_CLASSNAME_LEN 38
+	#define MAX_CLASSNAME_LEN 63
 	int len;
 	HWND parent;
 	POINT pt;
@@ -188,6 +147,7 @@ BOOL GetWindowInf(HWND hwnd, struct WLIST *w)
 			w->level++;
 			parent = GetParent(parent);
 		}
+		if (max_level < w->level) max_level = w->level;
 	}
 
 	//
@@ -219,79 +179,74 @@ BOOL GetWindowInf(HWND hwnd, struct WLIST *w)
 	// get the name of the executable that created the window
 	//
 	w->image = GetImageName(w->pid);
+	len = lstrlen(w->image);
+	if (max_image_len < len) max_image_len = len;
 
 	//
-	// Get the window caption if it has one, otherwise use the windows' classname
+	// Get the window caption if it has one, otherwise use the window's classname
 	//
 	len = GetWindowTextLength(hwnd);
 	if(!len) len = MAX_CLASSNAME_LEN;
 	w->caption = (char *) HeapAlloc(GetProcessHeap(), 0, sizeof(char) * (len + 1) );
 	if(!(w->caption)) Quit(MEMERR);
-	if(GetWindowTextLength(hwnd)) GetWindowText(hwnd, w->caption, len + 1);
+	if(GetWindowTextLength(hwnd)) {
+		GetWindowText(hwnd, w->caption, len + 1);
+		for (char *p = w->caption; *p; ++p) {
+			if (*p == '\n') *p = '_';
+		}
+	}
 	else GetClassName(hwnd, w->caption, len + 1);
 
 	return TRUE;
 }
 
-void PrintWindowInfHeadings(BOOL showpos)
+void PrintWindowInfHeadings(BOOL showpos, BOOL fullcapt)
 {
-	printf("Handle  Lev Pid -Window status- ");
+	printf("Handle    %*s%*s -Window status- ",
+		   max_level_len + 1, "Lev",
+		   max_level_len == 1 ? 4 : 5, "Pid");
 	//
 	// if showing window position and size, then print their headings
 	//
 	if(showpos) printf("  Left    Top  Width Height ");
 
-	printf("Image    Caption\n");
+	printf("%-*s Caption\n", fullcapt ? max_image_len : 8, "Image");
 }
 
 void LstWin(struct WLIST *w, struct ARGS *a)
 {
 	static int headings;
-	static int maxwidth;
 	const char *MinMaxRes, *ActiveInactive, *VisibleHidden, *EnabledDisabled;
 
-	if( (!headings++) && (!(a->listopts & BARE)) ) PrintWindowInfHeadings(a->listopts & SHOWPOS);
-	if(!maxwidth++) {
-		if(a->listopts & FULLCAPT) maxwidth = 255;
-		else {
-			if(a->listopts & SHOWPOS) maxwidth = 15;
-			else maxwidth = 5;
-		}
-	}
+	if( (!headings++) && (!(a->listopts & BARE)) ) PrintWindowInfHeadings(a->listopts & SHOWPOS, a->listopts & FULLCAPT);
 
 	if(a->listopts & SHOWTB)
 		if(!IsTaskbarWindow(w)) return;
 
-	if(w->styles & WS_MINIMIZE) MinMaxRes = "Min";
-	else if(w->styles & WS_MAXIMIZE) MinMaxRes = "Max";
-	else MinMaxRes = "Res";
+	MinMaxRes = (w->styles & WS_MINIMIZE) ? "Min" :
+				(w->styles & WS_MAXIMIZE) ? "Max" :
+											"Res";
 
-	if(GetForegroundWindow() == w->hwnd) ActiveInactive = "Act";
-	else ActiveInactive = "Ina";
+	ActiveInactive	= (GetForegroundWindow() == w->hwnd) ? "Act" : "Ina";
+	VisibleHidden	= (w->styles & WS_VISIBLE)  ? "Vis" : "Hid";
+	EnabledDisabled = (w->styles & WS_DISABLED) ? "Dis" : "Ena";
 
-	if(w->styles & WS_VISIBLE) VisibleHidden = "Vis";
-	else VisibleHidden = "Hid";
-
-	if(w->styles & WS_DISABLED) EnabledDisabled = "Dis";
-	else EnabledDisabled = "Ena";
-
-	printf("0x%06lX ", (unsigned long) w->hwnd);
-	printf("%i ", w->level);
-	printf("%4lu ", (unsigned long) w->pid);
-	printf("%s %s %s %s ", MinMaxRes, ActiveInactive, EnabledDisabled, VisibleHidden);
+	printf("0x%08lX %*i %4lu %s %s %s %s ",
+	       (unsigned long) w->hwnd,
+		   max_level_len, w->level,
+	       (unsigned long) w->pid,
+	       MinMaxRes, ActiveInactive, EnabledDisabled, VisibleHidden);
 	if(a->listopts & SHOWPOS) {
-		printf("%6d %6d ", w->left, w->top);
-		printf("%6d %6d ", w->width, w->height);
+		printf("%6d %6d %6d %6d ", w->left, w->top, w->width, w->height);
 	}
 	if(a->listopts & FULLCAPT) {
-		printf("%-s ", w->image);
-		printf("%s\n", w->caption);
+		printf("%-*s %s\n", max_image_len, w->image, w->caption);
 	}
-		else {
-			printf("%-8.8s ", w->image);
-			if(a->listopts & SHOWPOS) printf("%.10s\n", w->caption);
-			else printf("%.38s\n", w->caption);
-		}
+	else {
+		printf("%-8.8s %.*s\n",
+			   w->image,
+			   (a->listopts & SHOWPOS ? 8 : 36) - max_level_len + 1, w->caption);
+	}
 }
 
 //+---------------------------------------------------------------------------

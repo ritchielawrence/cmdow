@@ -4,7 +4,7 @@ void ShowHelp(char *cmd)
 {
 	if( (!lstrcmpi("window", cmd)) ||
 		(!lstrcmpi("/window", cmd)) ||
-		(!lstrcmpi("/T", cmd)) ||
+        (!lstrcmpi("/T", cmd)) ||
 		(!lstrcmpi("/B", cmd)) ||
 		(!lstrcmpi("/F", cmd)) ||
 		(!lstrcmpi("/P", cmd))) {
@@ -13,12 +13,12 @@ void ShowHelp(char *cmd)
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  CMDOW [window | /T] [/B] [/F] [/P]\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  window  Window to list.  If not specified all windows are listed. Specify a\n"
-		"          window by its unique handle in hexadecimal format (0x1A0142) or its\n"
-		"          caption (case insensitive). Windows without captions may be specified\n"
-		"          by their ClassName. The At symbol '@', may be used to refer to this\n"
-		"          window ie 'CMDOW @'. Use double quotes for captions containing\n"
-		"          whitespace or control characters.\n"
+		"  window  Window to list. Specify a window by its handle (in hex format, eg\n"
+		"          0x1A0142) or caption (window title). Caption is case insensitive.\n"
+        "          Use asterisk before/after caption to match zero or more characters.\n"
+        "          Windows without captions can matched by their ClassName. Use double\n"
+        "          quotes for captions containing whitespace or control characters. The\n"
+        "          At symbol '@' may be used to refer to this window. ie 'CMDOW @ /HID'.\n"
 		"  /T      List only the windows shown on the taskbar (these are typically\n"
 		"          visible level 1 windows that do not have an owner).\n");
 printf(
@@ -31,7 +31,7 @@ printf(
 		printf(
 		"  Here is a description of the output fields:-\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  Handle         Handle of the window, in hexadecimal format (0x0123AB).\n"
+		"  Handle         Handle of the window, in hexadecimal format (0x000123AB).\n"
 		"  Lev            Level of the window. The desktop window at level 0 is the area\n"
 		"                 on which all other windows are painted. Top level windows are\n"
 		"                 level 1 (and may be shown on the taskbar), all windows of\n"
@@ -106,17 +106,19 @@ printf(
 			(!lstrcmpi("/MAX", cmd)) ||
 			(!lstrcmpi("/RES", cmd))) {
 		printf(
-		"This form of CMDOW performs specified action(s) on the specified window.\n"
+		"This form of CMDOW performs specified action(s) on the specified window(s).\n"
 		"Some of these commands allow you to manipulate windows in ways not normally\n"
 		"possible. Improper use may cause unexpected results and system instability.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  CMDOW window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]\n"
+		"  CMDOW  window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]\n"
 		"         [/REN caption] [/MOV left top] [/SIZ width height] [/CLS] [/END]}\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  window  Window to perform action(s) on. Specify a window by its unique handle\n"
-		"          in hexadecimal format (0x1A0142) or its caption. Windows without\n"
-		"          captions can be specified by their ClassName. The At symbol '@', may\n"
-		"          be used to refer to this window. ie 'CMDOW @ /HID'\n"
+		"  window  Window to act on. Specify a window by its handle (in hex format, eg\n"
+		"          0x1A0142) or caption (window title). Caption is case insensitive.\n"
+        "          Use asterisk before/after caption to match zero or more characters.\n"
+        "          Windows without captions are matched by their ClassName. Use double\n"
+        "          quotes for captions containing whitespace or control characters. The\n"
+        "          At symbol '@' may be used to refer to this window. ie 'CMDOW @ /HID'.\n"
 		"  /ACT    Activates the specified window. It's possible to activate a hidden\n"
 		"          and/or disabled window (although doing so will not make it visible or\n"
 		"          enabled). If a minimized window is activated, it remains minimized.\n");
@@ -141,8 +143,9 @@ printf(
 		"          the window. Applying /RES a second time, will restore the window to\n"
 		"          the size and position it was before it was maximized.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  If more than one window matches the specified caption, CMDOW uses the first\n"
-		"  one found. Multiple actions are performed in order, from left to right. Eg\n\n"
+		"  If more than one window matches the specified caption, CMDOW only acts on the\n"
+		"  first one. To override this, add the /DBM (Don't Blame Me) switch - DANGEROUS.\n"
+		"  Multiple actions are performed in order, from left to right. Eg:-\n\n"
 
 		"    CMDOW 0x0E0144 /hid /ren \"10%% complete\" /mov 0 0 /siz 300 100 /act /vis\n");
 	}
@@ -164,18 +167,20 @@ printf(
 			(!lstrcmpi("/CLS", cmd)) ||
 			(!lstrcmpi("/END", cmd))) {
 		printf(
-		"This form of CMDOW performs specified action(s) on the specified window.\n"
+		"This form of CMDOW performs specified action(s) on the specified window(s).\n"
 		"Some of these commands allow you to manipulate windows in ways not normally\n"
 		"possible. Improper use may cause unexpected results and system instability.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  CMDOW window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]\n"
-		"        [/TOP] [/NOT] [/REN caption] [/MOV left top] [/SIZ width height] [/CLS]\n"
-		"        [/END]}\n\n"
+		"  CMDOW handle {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]\n"
+		"          [/TOP] [/NOT] [/REN newcaption] [/MOV left top] [/SIZ width height]\n"
+		"          [/CLS] [/END]}\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
-		"  window  Window to perform action(s) on. Specify a window by its unique handle\n"
-		"          in hexadecimal format (0x1A0142) or its caption. Windows without\n"
-		"          captions can be specified by their ClassName. The At symbol '@', may\n"
-		"          be used to refer to this window. ie 'CMDOW @ /HID'\n"
+		"  window  Window to act on. Specify a window by its handle (in hex format, eg\n"
+		"          0x1A0142) or caption (window title). Caption is case insensitive.\n"
+        "          Use asterisk before/after caption to match zero or more characters.\n"
+        "          Windows without captions are matched by their ClassName. Use double\n"
+        "          quotes for captions containing whitespace or control characters. The\n"
+        "          At symbol '@' may be used to refer to this window. ie 'CMDOW @ /HID'.\n"
 		"  /REN    Renames the caption of the specified window to the caption specified\n"
 		"          after /REN. Use double quotes for captions containing whitespace.\n");
 		printf(
@@ -206,8 +211,9 @@ printf(
 		"          all windows with the same Pid are also killed. Use very carefully.\n\n");
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		printf(
-		"  If more than one window matches the specified caption, CMDOW uses the first\n"
-		"  one found. Multiple actions are performed in order, from left to right. Eg\n\n"
+		"  If more than one window matches the specified caption, CMDOW only acts on the\n"
+		"  first one. To override this, add the /DBM (Don't Blame Me) switch - DANGEROUS.\n"
+		"  Multiple actions are performed in order, from left to right. Eg:-\n\n"
 
 		"    CMDOW 0x0E0144 /hid /ren \"10%% complete\" /mov 0 0 /siz 300 100 /act /vis\n");
 	}
@@ -253,7 +259,7 @@ printf(
 	}
 	else {
 		printf(
-		"CMDOW [Version 1.4.4] Win32 Commandline Window Utility for NT4/2000/XP/7.\n"
+		"CMDOW [Version 1.4.7] Win32 Commandline Window Utility for NT4/2000/XP/7.\n"
 		"(C) Copyright 2001-2014 Ritchie Lawrence, http://www.commandline.co.uk.\n\n"
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		"  CMDOW [window | /T] [/B] [/F] [/P]\n"
@@ -264,7 +270,7 @@ printf(
 		"  CMDOW /RUN [state] file [args]\n\n");
 //		 ----+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 		printf(
-		"  window  List specified window (if omitted, all windows are listed).\n"
+		"  window  List specified window(s) (if omitted, all windows are listed).\n"
 		"  /T      List windows only shown on the taskbar.\n"
 		"  /B      List windows using bare format (no heading information).\n"
 		"  /F      List windows showing full information (don't truncate any fields).\n"
@@ -291,8 +297,8 @@ printf(
 		"  args    Optional commandline arguments passed to launched application.\n\n");
 		printf(
 		"  Specify a window by its caption (case insensitive) or handle in hex format.\n"
-		"  The At symbol '@' may be used to refer to this window. For more help on any\n"
-		"  parameter use CMDOW /? <parameter>. Eg CMDOW /? /RUN or CMDOW /? window.\n");
+		"  Wildcards may be used. Use At symbol to refer to this window. For more help\n"
+		"  use CMDOW /? <parameter>. Eg CMDOW /? /window or CMDOW /? /act.\n");
 	}
 }
 

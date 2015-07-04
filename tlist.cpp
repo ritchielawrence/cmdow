@@ -148,9 +148,7 @@ int GetTaskList(struct TLIST *tlist)
         }
 
 		// load process name into tlist
-        if ( (unsigned int) lstrlen(szProcessName) <= sizeof(tlist->ProcessName)) {
-            lstrcpy( tlist->ProcessName, szProcessName );
-        }
+		lstrcpy( tlist->ProcessName, szProcessName );
 
 		// load Pid into tlist
 	    pCounter = (PPERF_COUNTER_BLOCK) ((DWORD)pInst + pInst->ByteLength);

@@ -1,6 +1,6 @@
 //#ifdef _MERGE_RDATA_
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
-#define _WIN32_WINNT 0x0400
+#define _WIN32_WINNT 0x0500
 
 #include <windows.h>
 #include <stdio.h>
@@ -60,6 +60,10 @@ enum LISTOPTS {
 	BARE		= 0x0008			/* Bare format (no heading information) */
 };
 
+enum ACTOPTS {
+    DONTBLAMEME = 0X0001            /* Allows actions to be performed on more than one windows */
+};
+
 struct ARGS {
 	char			*caption;		/* Caption to list, or operate on */
 	char			*newcapt;		/* New caption, used with /REN */
@@ -69,6 +73,7 @@ struct ARGS {
 	HWND			myhwnd;			/* Handle of this console window */
 	enum TASK		tasks[MAXTASKS];/* Operations to perform on specified window */
 	int				listopts;		/* Options for listing windows */
+	int             actopts;        /* Options for actions upon selected windows */
 	int				left, top;		/* Holds coords for moving window */
 	int				width, height;	/* Used for resizing a window */
 	char			*file;			/* File to open/run, used with /RUN */
@@ -120,7 +125,7 @@ void GetWindowList(struct WLIST *w);
 BOOL CALLBACK GetWindowListProc(HWND, LPARAM);
 BOOL GetWindowInf(HWND, struct WLIST *); // get info about window from its handle
 
-void PrintWindowInfHeadings(BOOL showpos);
+void PrintWindowInfHeadings(BOOL showpos, BOOL fullcapt);
 void PrintWindowInf(struct WLIST *w, BOOL showpos, BOOL showtb);
 void AltTab(void);
 void SetFGWindow(HWND);
