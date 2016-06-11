@@ -232,5 +232,4 @@ Revisions
 Copyright and License
 .....................
 
-Code and documentation copyright 2001-2014 Ritchie Lawrence. Code released under the MIT license
-The MIT License (MIT)
+Code and documentation copyright 2001-2014 Ritchie Lawrence. Code released under `MIT License<LICENSE.txt>`_.
