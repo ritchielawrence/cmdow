@@ -6,7 +6,10 @@ Table of Contents
 -----------------
 
 * Synopsis_
+* Screenshots_
 * Usage_
+* Revisions_
+* Copyright_
 
 .. _synopsis:
 
@@ -21,7 +24,20 @@ Cmdow was written with batch file programmers in mind. Particular attention has 
 
 Cmdow is simple and intuitive to use. To list all its options, type cmdow /?. For detailed help on any option type cmdow /? <option>. Eg cmdow /? /run.
 
-.. _usage:
+Screenshots
+-----------
+
+.. image:: cmdow-screenshot0.png
+
+.. image:: cmdow-screenshot1.png
+
+.. image:: cmdow-screenshot2.png
+
+.. image:: cmdow-screenshot3.png
+
+.. image:: cmdow-screenshot4.png
+
+.. image:: cmdow-screenshot5.png
 
 Usage
 -----
@@ -175,3 +191,8 @@ application associated with the filename extension.
     shell\readme=Read &Me
     shell\readme\command=cmdow /run \readme.htm
 
+Revisions
+.........
+
+Copyright
+.........
