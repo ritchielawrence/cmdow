@@ -9,7 +9,7 @@ Table of Contents
 * Usage_
 * Screenshots_
 * Revisions_
-* Copyright and License_
+* `Copyright and License`_
 
 Synopsis
 --------
