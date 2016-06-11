@@ -6,12 +6,10 @@ Table of Contents
 -----------------
 
 * Synopsis_
-* Screenshots_
 * Usage_
+* Screenshots_
 * Revisions_
 * Copyright_
-
-.. _synopsis:
 
 Synopsis
 --------
@@ -23,21 +21,6 @@ It is a small standalone executable. It does not create any temporary files, nor
 Cmdow was written with batch file programmers in mind. Particular attention has been paid to Cmdows output making it easy to process with the 'FOR /F' command found in the Windows command processor (cmd.exe).
 
 Cmdow is simple and intuitive to use. To list all its options, type cmdow /?. For detailed help on any option type cmdow /? <option>. Eg cmdow /? /run.
-
-Screenshots
------------
-
-.. image:: cmdow-screenshot0.png
-
-.. image:: cmdow-screenshot1.png
-
-.. image:: cmdow-screenshot2.png
-
-.. image:: cmdow-screenshot3.png
-
-.. image:: cmdow-screenshot4.png
-
-.. image:: cmdow-screenshot5.png
 
 Usage
 -----
@@ -191,8 +174,60 @@ application associated with the filename extension.
     shell\readme=Read &Me
     shell\readme\command=cmdow /run \readme.htm
 
+Screenshots
+-----------
+
+.. image:: cmdow-screenshot0.png
+
+.. image:: cmdow-screenshot1.png
+
+.. image:: cmdow-screenshot2.png
+
+.. image:: cmdow-screenshot3.png
+
+.. image:: cmdow-screenshot4.png
+
+.. image:: cmdow-screenshot5.png
+
 Revisions
 .........
+
++--------+----------+---------------------------------------------------------------------------------+
+|Revision|Date      |Changes                                                                          |
++========+==========+=================================================================================+
+|1.0     |2001-12-20|Cmdow created.                                                                   |
++--------+----------+---------------------------------------------------------------------------------+
+|1.1     |2002-02-25|Added /RUN command.                                                              |
++--------+----------+---------------------------------------------------------------------------------+
+|1.2     |2002-10-29|Fixed issue caused when conole windows have no title. Enhance /AT feature to     |
+|        |          |restore an activated window if it was minimized.                                 |
++--------+----------+---------------------------------------------------------------------------------+
+|1.3     |2002-11-20|Added /FS and /WM options to allow switching between full screen mode and window |
+|        |          |mode.                                                                            |
++--------+----------+---------------------------------------------------------------------------------+
+|1.4     |2002-11-07|Added /TOP and /NOT options to allow the setting/clearing of windows 'always on  |
+|        |          |top'. Fixed argument parsing bug for /MOV and /REN options.                      |
++--------+----------+---------------------------------------------------------------------------------+
+|1.4.1   |2003-05-14|Cmdow can now rename the console window that launched it. Previously the title   |
+|        |          |would revert when Cmdow exited.                                                  |
++--------+----------+---------------------------------------------------------------------------------+
+|1.4.2   |2003-08-18|/UM seperseded by /UW switch. See FAQ's for details.                             |
++--------+----------+---------------------------------------------------------------------------------+
+|1.4.3   |2004-12-19|Fixed bug where renaming the current console window would fail if the new caption|
+|        |          |title contained whitespace.                                                      |
++--------+----------+---------------------------------------------------------------------------------+
+|1.4.4   |2014-11-08|Cmdow is now open source software released under the MIT license.                |
++--------+----------+---------------------------------------------------------------------------------+
+|1.4.7   |2014-12-29|Wildcards can now be used to filter window captions. Also now possible to perform|
+|        |          |actions on multiple windows. Handle display is extended to eight digits. Level is|
+|        |          |dynamically sized. Class name is dynamically sized. Newlines in the caption are  |
+|        |          |converted to underscore. Sizes are based on the entire window list, not just what|
+|        |          |is displayed. Help pages updated. Internally: Remove process name length test, as|
+|        |          |WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted |
+|        |          |some if/else assignments for ternary operator.                                   |
++--------+----------+---------------------------------------------------------------------------------+
+|1.4.8   |2014-12-30|Help page typos corrected. Output can handle 5-digit PIDs.                       |
++--------+----------+---------------------------------------------------------------------------------+
 
 Copyright
 .........
