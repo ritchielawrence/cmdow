@@ -8,6 +8,8 @@ Table of Contents
 * `Is Cmdow Malware?`_
 * Synopsis_
 * Usage_
+* Examples_
+* FAQs
 * Screenshots_
 * Revisions_
 * `Copyright and License`_
@@ -20,11 +22,12 @@ Is Cmdow Malware?
 To view the anti-virus scan results yourself, download the current version of Cmdow (v1.4.8 at the time of writing), extract the contents of the zip file and upload cmdow.exe to `VirusTotal`__. You'll end up at this page 
 https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/ (BTW, the long hexadecimal string in the URL matches the `SHA256 checksum`__ of cmdow.exe).
 
-If you have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free `Code::Blocks`__ IDE. There's even a Code::Blocks project file (cmdow.cbp) included in the Cmdow download.
+If you have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free `Code::Blocks`__ IDE. There's even a Code::Blocks project file (`cmdow.cbp`_) included in the Cmdow download.
 
 __ https://virustotal.com/
 __ https://en.wikipedia.org/wiki/Sha1sum
 __ http://www.codeblocks.org/
+.. _cmdow.cbp: LICENSE.txt
 
 Synopsis
 --------
@@ -188,6 +191,180 @@ application associated with the filename extension.
     icon=myicon.ico
     shell\readme=Read &Me
     shell\readme\command=cmdow /run \readme.htm
+
+Examples
+--------
+
+View the Cmdow main help screen:-
+
+::
+
+    cmdow /?
+
+View help about the /MOV (move a window) option:-
+
+::
+
+    cmdow /? /mov
+
+To list details of all windows:-
+
+::
+
+    cmdow
+
+To list details of only the windows listed on the taskbar:-
+
+::
+
+    cmdow /t
+
+To list details and positions of only the windows listed on the taskbar:-
+
+::
+
+    cmdow /t /p
+
+To list details of a particular window:-
+
+::
+
+    cmdow "untitled - notepad" or Cmdow 0x010052
+
+where 0x010052 is the window handle of the window titled "untitled - notepad".
+
+Tile all windows vertically:-
+
+::
+
+    cmdow /tv
+
+Bearing in mind that the Cmdow actions are carried out in the order in which they are specified (that is, from left to right), this example restores, moves, renames and finally activates Calc.exe:-
+
+::
+
+    cmdow Calculator /res /mov 100 200 /ren "New Caption" /act
+
+Batch file to activate a different window every 10 seconds:-
+
+::
+
+    @echo off
+    :loop
+    cmdow /AT
+    ping 127.0.0.1 -n 11 >nul
+    goto :loop
+
+Batch file to close all windows listed on the taskbar:-
+
+::
+
+    @echo off
+    :: Hide this console window so its not shown on taskbar
+    cmdow @ /hid
+    for /f %%a in ('cmdow /t') do cmdow %%a /cls
+    :: Now close this console window
+    cmdow @ /cls
+
+Stupid batch file to remove all the buttons from Calculator:-
+
+::
+
+    @echo off
+    :: run calc and give it time to fully load
+    start calc & ping 127.0.0.1 -n 2 >nul
+    :: hide windows at level 2 and whose image is calc
+    for /f "tokens=1-2,8" %%a in ('cmdow') do (
+      if /i "%%c"=="calc" if "%%b"=="2" cmdow %%a /hid
+    )
+
+Batch file to retrieve display resolution. The co-ords of the first window listed by Cmdow is the screen resolution (this window also has a level of zero which can be identifed using FOR /F):-
+
+::
+
+    @echo off
+    for /f "tokens=2,10-11" %%a in ('cmdow /p') do (
+      if "%%a"=="0" set "WIDTH=%%b" & set "HEIGHT=%%c"
+    )
+    echo Resolution is %WIDTH%x%HEIGHT%
+
+Run a program hidden:-
+
+::
+
+    cmdow /run /hid myprog.exe
+
+Run a batch file hidden passing it parameters:-
+
+::
+
+    cmdow /run /hid mybat arg1 "arg 2"
+
+Batch file to alert Administrator if the number of windows shown on the taskbar changes (as might be the case when an application or the operating system generates an error message, or may be backup software is prompting for a tape etc). Loops every 60 seconds until number of windows changes.
+
+::
+
+    @echo off&setlocal&set LAST=
+    cmdow @ /hid
+    :loop
+    ping 127.0.0.1 -n 61 >nul & set "THIS=0"
+    for /f %%a in ('cmdow /t /b') do set /a THIS+=1
+    if not defined LAST set "LAST=%THIS%"
+    if %THIS% NEQ %LAST% (goto:alert) else (set LAST=%THIS%)
+    goto:loop
+    :alert
+    net send administrator Change in windows on taskbar.
+    cmdow @ /vis
+
+Creating an Autorun CD. Copy your autorun.inf file and cmdow.exe to the root of the CD. Here is a sample autorun.inf. It also shows how add a context menu for the CD. This could be used to install software required by your CD or to view a readme file etc:-
+
+::
+
+    [autorun]
+    open=cmdow /run /max \video.mpg
+    icon=myicon.ico
+    shell\readme=Read &Me
+    shell\readme\command=cmdow /run \readme.htm
+    shell\install\=&Install Realplayer
+    shell\install\command=rp8-complete2-u1-setup.exe
+
+Here is another use suggested by a Cmdow user:-
+
+Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
+
+::
+
+    :: save the current window status
+    for /f "tokens=4" %%a in ('cmdow @ /b') do set wstate=%%a
+    :: call NOTEPAD to display this BATch file (or anything else!)
+    call notepad "%~f0"
+    :: (it is assumed that the user now closes the NOTEPAD window)
+    :: if the window status was maximised previously, return it to that state
+    if "%wstate%"=="Max" cmdow @ /max
+    echo Here we are again, back in our maximised window!
+
+
+FAQs
+----
+
+> How can I disable or hide the desktop?
+
+A. Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
+So running Cmdow "Program Manager" /hid will hide the deskop. If you have another window titled "Program Manager", then you'll need to use an alternative method. See the example scripts.
+
+Q. On a W2K machine running a number of applications that monitor our servers and networks, I have a batch file that runs Cmdow /AT every 20 seconds. Sometimes Cmdow fails to activate an application window, instead the taskbar flashes blue.
+
+A. This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
+
+HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
+
+Q. When I use Cmdow at a command prompt or in a batch file and try to change the console title. Why does the title revert back when Cmdow finishes or when the batch file ends?
+
+A. This has been fixed in version 1.4.1.
+
+Q. How can I undo the effects of tiling, cascading or minimizing all windows?
+
+A. In version 1.4.2 the /UM switch has been superseded by /UW. This new switch will undo the effect of tiling/cascading and minimizing all windows. To maintain compatability with existing scripts, the /UM switch can still be used even though it's no longer documented on Cmdow's helpscreen. /UM now has exactly the same effect as /UW.
 
 Screenshots
 -----------
