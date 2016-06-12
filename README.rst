@@ -17,10 +17,10 @@ Table of Contents
 Is Cmdow Malware?
 -----------------
 
-**Of course not!** However, one of its features allows the user to hide program windows and this has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan, whilst the other 60% regard Cmdow.exe as completely safe.
+**Of course not!** However, one of its features allows the user to hide program windows and this has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan, whilst the other 60% regard Cmdow as completely safe.
 
-To view the anti-virus scan results yourself, download the current version of Cmdow (v1.4.8 at the time of writing), extract the contents of the zip file and upload cmdow.exe to `VirusTotal`__. You'll end up at this page 
-https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/ (BTW, the long hexadecimal string in the URL matches the `SHA256 checksum`__ of cmdow.exe).
+To view the anti-virus scan results yourself, download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to `VirusTotal`__. You'll end up at this page at a page like this: 
+https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/ (note, the long hexadecimal string in the URL matches the `SHA256 checksum`__ of cmdow.exe, v1.4.8 in this instance).
 
 If you have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free `Code::Blocks`__ IDE. There's even a Code::Blocks project file (`cmdow.cbp`_) included in the Cmdow download.
 
