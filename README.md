@@ -193,44 +193,6 @@ View the Cmdow main help screen:-
 cmdow /?
 </code></pre>
 
-View help about the /MOV (move a window) option:-
-
-<pre lang="batch"><code>
-cmdow /? /mov
-</code></pre>
-
-To list details of all windows:-
-
-<pre lang="batch"><code>
-cmdow
-</code></pre>
-
-To list details of only the windows listed on the taskbar:-
-
-<pre lang="batch"><code>
-cmdow /t
-</code></pre>
-
-To list details and positions of only the windows listed on the taskbar:-
-
-<pre lang="batch"><code>
-cmdow /t /p
-</code></pre>
-
-To list details of a particular window:-
-
-<pre lang="batch"><code>
-cmdow "untitled - notepad" or Cmdow 0x010052
-</code></pre>
-
-where 0x010052 is the window handle of the window titled "untitled - notepad".
-
-Tile all windows vertically:-
-
-<pre lang="batch"><code>
-cmdow /tv
-</code></pre>
-
 ## FAQs<a name="faqs"></a>
 
 How can I disable or hide the desktop?
