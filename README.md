@@ -56,6 +56,7 @@ This form of CMDOW lists window details.
 </pre>
 
 Here is a description of the output fields:-
+
 <pre>
   Handle         Handle of the window, in hexadecimal format (0x000123AB).
   Lev            Level of the window. The desktop window at level 0 is the area
@@ -318,7 +319,8 @@ icon=myicon.ico
 shell\readme=Read &Me
 shell\readme\command=cmdow /run \readme.htm
 shell\install\=&Install Realplayer
-shell\install\command=rp8-complete2-u1-setup.exe</code></pre>
+shell\install\command=rp8-complete2-u1-setup.exe
+</code></pre>
 
 Here is another use suggested by a Cmdow user:-
 
@@ -342,7 +344,7 @@ How can I disable or hide the desktop?
 >Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
 So running Cmdow "Program Manager" /hid will hide the deskop. If you have another window titled "Program Manager", then you'll need to use an alternative method. See the example scripts.
 
-----
+---
 
 On a W2K machine running a number of applications that monitor our servers and networks, I have a batch file that runs Cmdow /AT every 20 seconds. Sometimes Cmdow fails to activate an application window, instead the taskbar flashes blue.
 
@@ -352,13 +354,13 @@ On a W2K machine running a number of applications that monitor our servers and n
   HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
 </pre>
 
-----
+---
 
 When I use Cmdow at a command prompt or in a batch file and try to change the console title. Why does the title revert back when Cmdow finishes or when the batch file ends?
 
 >This has been fixed in version 1.4.1.
 
-----
+---
 
 How can I undo the effects of tiling, cascading or minimizing all windows?
 
@@ -386,7 +388,7 @@ Revision | Date | Changes
 --|--|--
 1.1 | 2002-02-25 | Added /RUN command.
 --|--|--
-1.2 | 2002-10-29 | Fixed issue caused when conole windows have no title. Enhance /AT feature to restore an activated window if it was minimized.                                 |
+1.2 | 2002-10-29 | Fixed issue caused when conole windows have no title. Enhance /AT feature to restore an activated window if it was minimized.
 --|--|--
 1.3 | 2002-11-20 | Added /FS and /WM options to allow switching between full screen mode and window mode.
 --|--|--
