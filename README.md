@@ -193,6 +193,148 @@ View the Cmdow main help screen:-
 cmdow /?
 ```
 
+View help about the /MOV (move a window) option:-
+
+```batch
+cmdow /? /mov
+```
+
+To list details of all windows:-
+
+```batch
+cmdow
+```
+
+To list details of only the windows listed on the taskbar:-
+
+```batch
+cmdow /t
+```
+
+To list details and positions of only the windows listed on the taskbar:-
+
+```batch
+cmdow /t /p
+```
+
+To list details of a particular window:-
+
+```batch
+cmdow "untitled - notepad" or Cmdow 0x010052
+```
+
+where 0x010052 is the window handle of the window titled "untitled - notepad".
+
+Tile all windows vertically:-
+
+```batch
+cmdow /tv
+```
+
+Bearing in mind that the Cmdow actions are carried out in the order in which they are specified (that is, from left to right), this example restores, moves, renames and finally activates Calc.exe:-
+
+```batch
+cmdow Calculator /res /mov 100 200 /ren "New Caption" /act
+```
+
+Batch file to activate a different window every 10 seconds:-
+
+```batch
+@echo off
+:loop
+cmdow /AT
+ping 127.0.0.1 -n 11 >nul
+goto :loop
+```
+
+Batch file to close all windows listed on the taskbar:-
+
+```batch
+@echo off
+:: Hide this console window so its not shown on taskbar
+cmdow @ /hid
+for /f %%a in ('cmdow /t') do cmdow %%a /cls
+:: Now close this console window
+cmdow @ /cls
+```
+
+Stupid batch file to remove all the buttons from Calculator:-
+
+```batch
+@echo off
+:: run calc and give it time to fully load
+start calc & ping 127.0.0.1 -n 2 >nul
+:: hide windows at level 2 and whose image is calc
+for /f "tokens=1-2,8" %%a in ('cmdow') do (
+  if /i "%%c"=="calc" if "%%b"=="2" cmdow %%a /hid
+)
+```
+
+Batch file to retrieve display resolution. The co-ords of the first window listed by Cmdow is the screen resolution (this window also has a level of zero which can be identifed using FOR /F):-
+
+```batch
+@echo off
+for /f "tokens=2,10-11" %%a in ('cmdow /p') do (
+  if "%%a"=="0" set "WIDTH=%%b" & set "HEIGHT=%%c"
+)
+echo Resolution is %WIDTH%x%HEIGHT%
+```
+
+Run a program hidden:-
+
+```batch
+cmdow /run /hid myprog.exe
+```
+
+Run a batch file hidden passing it parameters:-
+
+```batch
+cmdow /run /hid mybat arg1 "arg 2"
+```
+
+Batch file to alert Administrator if the number of windows shown on the taskbar changes (as might be the case when an application or the operating system generates an error message, or may be backup software is prompting for a tape etc). Loops every 60 seconds until number of windows changes.
+
+```batch
+@echo off&setlocal&set LAST=
+cmdow @ /hid
+:loop
+ping 127.0.0.1 -n 61 >nul & set "THIS=0"
+for /f %%a in ('cmdow /t /b') do set /a THIS+=1
+if not defined LAST set "LAST=%THIS%"
+if %THIS% NEQ %LAST% (goto :alert) else (set LAST=%THIS%)
+goto :loop
+:alert
+net send administrator Change in windows on taskbar.
+cmdow @ /vis
+```
+
+Creating an Autorun CD. Copy your autorun.inf file and cmdow.exe to the root of the CD. Here is a sample autorun.inf. It also shows how add a context menu for the CD. This could be used to install software required by your CD or to view a readme file etc:-
+
+```batch
+[autorun]
+open=cmdow /run /max \video.mpg
+icon=myicon.ico
+shell\readme=Read &Me
+shell\readme\command=cmdow /run \readme.htm
+shell\install\=&Install Realplayer
+shell\install\command=rp8-complete2-u1-setup.exe
+```
+
+Here is another use suggested by a Cmdow user:-
+
+> Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
+
+```batch
+:: save the current window status
+for /f "tokens=4" %%a in ('cmdow @ /b') do set wstate=%%a
+:: call NOTEPAD to display this BATch file (or anything else!)
+call notepad "%~f0"
+:: (it is assumed that the user now closes the NOTEPAD window)
+:: if the window status was maximised previously, return it to that state
+if "%wstate%"=="Max" cmdow @ /max
+echo Here we are again, back in our maximised window!
+```
+
 ## FAQs<a name="faqs"></a>
 
 How can I disable or hide the desktop?
