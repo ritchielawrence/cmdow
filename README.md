@@ -13,12 +13,12 @@
 
 ## Is Cmdow Malware?<a name="is-cmdow-malware"></a>
 
-**Of course not!** However, one of its features allows the user to hide program windows which has led to 40% of anti-virus software vendors classifying Cmdow as anything from a hacking tool to a trojan, whilst the other 60% regard Cmdow as completely safe.
+**Of course not!** However, not everyone agrees. One of Cmdow's features allow users to hide program windows and it's this feature that has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.
 
-Don't take my word for it, and view the anti-virus scan results yourself. Download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to [VirusTotal](https://virustotal.com/). You'll end up at this page at a page like this: 
+Don't take my word for it though - view the anti-virus scan results yourself. Download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to [VirusTotal](https://virustotal.com/). You'll end up at this page at a page like this: 
 [https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/](https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/) (note, the long hexadecimal string in the URL matches the [SHA256 checksum](https://en.wikipedia.org/wiki/Sha1sum) of cmdow.exe, v1.4.8 in this instance).
 
-If you have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free [Code::Blocks](http://www.codeblocks.org/) IDE. There's even a Code::Blocks project file ([cmdow.cbp](https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp)) included in the Cmdow download.
+If you still have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free [Code::Blocks](http://www.codeblocks.org/) IDE. There's even a Code::Blocks project file ([cmdow.cbp](https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp)) included in the Cmdow download.
 
 ## Synopsis<a name="synopsis"></a>
 
@@ -102,14 +102,6 @@ This form of CMDOW performs a single action typically affecting all windows.
   /WM     Switch the window running this process into window mode.
 </pre>
 
-This example batch file activates a different window every ten seconds:-
-
-<pre lang="batch"><code>
-    @ECHO OFF
-    :LOOP
-    CMDOW /AT & PING 127.0.0.1 -n 11 >NUL & GOTO :LOOP
-</code></pre>
-
 This form of CMDOW performs specified action(s) on the specified window(s).
 Some of these commands allow you to manipulate windows in ways not normally
 possible. Improper use may cause unexpected results and system instability.
@@ -147,11 +139,9 @@ possible. Improper use may cause unexpected results and system instability.
   If more than one window matches the specified caption, CMDOW only acts on the
   first one. To override this add the /DBM (Don't Blame Me) switch - DANGEROUS.
   Multiple actions are performed in order, from left to right. Eg:-
-</pre>
 
-<pre lang="batch"><code>
     CMDOW 0x0E0144 /hid /ren "10% complete" /mov 0 0 /siz 300 100 /act /vis
-</code></pre>
+</pre>
 
 This form of CMDOW executes the specified file or opens it using the
 application associated with the filename extension.
@@ -169,20 +159,6 @@ application associated with the filename extension.
   file    File to execute/open. Use double quotes if filename contains spaces.
   args    Optional arguments passed on to the application. Specify any args
           exactly as you would if executing/opening the file directly.
-
-  Eg /P instructs Notepad to send the specified file to the default printer,
-  then quit. This example prints readme.txt without displaying any windows:-
-
-    CMDOW /RUN /HID notepad /P readme.txt
-
-  CMDOW can be used to create autorun CDs that work on all Win32 platforms.
-  Copy CMDOW.EXE to the CD and create an autorun.inf file. Here is a sample:-
-
-    [autorun]
-    open=cmdow /run /max \video.mpg
-    icon=myicon.ico
-    shell\readme=Read &Me
-    shell\readme\command=cmdow /run \readme.htm
 </pre>
 
 ## Examples<a name="examples"></a>
