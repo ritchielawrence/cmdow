@@ -189,9 +189,9 @@ application associated with the filename extension.
 
 View the Cmdow main help screen:-
 
-<pre lang="batch"><code>
+```batch
 cmdow /?
-</code></pre>
+```
 
 ## FAQs<a name="faqs"></a>
 
