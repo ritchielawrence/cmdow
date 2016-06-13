@@ -11,8 +11,6 @@
 * [Revisions](#revisions)
 * [Copyright and License](#copyright-and-license)
 
-
-
 ## Is Cmdow Malware?<a name="is-cmdow-malware"></a>
 
 **Of course not!** However, one of its features allows the user to hide program windows and this has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan, whilst the other 60% regard Cmdow as completely safe.
@@ -20,7 +18,7 @@
 To view the anti-virus scan results yourself, download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to [VirusTotal](https://virustotal.com/). You'll end up at this page at a page like this: 
 [https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/](https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/) (note, the long hexadecimal string in the URL matches the [SHA256 checksum](https://en.wikipedia.org/wiki/Sha1sum) of cmdow.exe, v1.4.8 in this instance).
 
-If you have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free [Code::Blocks](http://www.codeblocks.org/) IDE. There's even a Code::Blocks project file ([cmdow.cbp](cmdow.cbp)) included in the Cmdow download.
+If you have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free [Code::Blocks](http://www.codeblocks.org/) IDE. There's even a Code::Blocks project file ([cmdow.cbp](https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp)) included in the Cmdow download.
 
 ## Synopsis<a name="synopsis"></a>
 
@@ -245,7 +243,7 @@ Batch file to activate a different window every 10 seconds:-
 @echo off
 :loop
 cmdow /AT
-ping 127.0.0.1 -n 11 >nul
+ping 127.0.0.1 -n 11 \>nul
 goto :loop
 </code></pre>
 
@@ -265,7 +263,7 @@ Stupid batch file to remove all the buttons from Calculator:-
 <pre lang="batch"><code>
 @echo off
 :: run calc and give it time to fully load
-start calc & ping 127.0.0.1 -n 2 >nul
+start calc & ping 127.0.0.1 -n 2 \>nul
 :: hide windows at level 2 and whose image is calc
 for /f "tokens=1-2,8" %%a in ('cmdow') do (
   if /i "%%c"=="calc" if "%%b"=="2" cmdow %%a /hid
@@ -300,7 +298,7 @@ Batch file to alert Administrator if the number of windows shown on the taskbar 
 @echo off&setlocal&set LAST=
 cmdow @ /hid
 :loop
-ping 127.0.0.1 -n 61 >nul & set "THIS=0"
+ping 127.0.0.1 -n 61 \>nul & set "THIS=0"
 for /f %%a in ('cmdow /t /b') do set /a THIS+=1
 if not defined LAST set "LAST=%THIS%"
 if %THIS% NEQ %LAST% (goto :alert) else (set LAST=%THIS%)
@@ -383,30 +381,30 @@ How can I undo the effects of tiling, cascading or minimizing all windows?
 ## Revisions<a name="revisions"></a>
 
 Revision | Date | Changes
---|--|--
+---|---|---
 1.0 | 2001-12-20 | Cmdow created.
---|--|--
+---|---|---
 1.1 | 2002-02-25 | Added /RUN command.
---|--|--
+---|---|---
 1.2 | 2002-10-29 | Fixed issue caused when conole windows have no title. Enhance /AT feature to restore an activated window if it was minimized.
---|--|--
+---|---|---
 1.3 | 2002-11-20 | Added /FS and /WM options to allow switching between full screen mode and window mode.
---|--|--
+---|---|---
 1.4 | 2002-11-07 | Added /TOP and /NOT options to allow the setting/clearing of windows 'always on top'. Fixed argument parsing bug for /MOV and /REN options.
---|--|--
+---|---|---
 1.4.1 | 2003-05-14 | Cmdow can now rename the console window that launched it. Previously the title would revert when Cmdow exited.
---|--|--
+---|---|---
 1.4.2 | 2003-08-18 | /UM seperseded by /UW switch. See FAQ's for details.
---|--|--
+---|---|---
 1.4.3 | 2004-12-19 | Fixed bug where renaming the current console window would fail if the new caption title contained whitespace.
---|--|--
+---|---|---
 1.4.4 | 2014-11-08 | Cmdow is now open source software released under the MIT license.
---|--|--
+---|---|---
 1.4.7 | 2014-12-29 | Wildcards can now be used to filter window captions. Also now possible to perform actions on multiple windows. Handle display is extended to eight digits. Level is dynamically sized. Class name is dynamically sized. Newlines in the caption are converted to underscore. Sizes are based on the entire window list, not just what is displayed. Help pages updated. Internally: Remove process name length test, as WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted some if/else assignments for ternary operator.
---|--|--
+---|---|---
 1.4.8 | 2014-12-30 | Help page typos corrected. Output can handle 5-digit PIDs.
---|--|--
+---|---|---
 
 ## Copyright and License<a name="copyright-and-license"></a>
 
-Code and documentation copyright 2001-2014 Ritchie Lawrence. Code released under [MIT License](LICENSE.txt)
+Code and documentation copyright 2001-2014 Ritchie Lawrence. Code released under [MIT License](https://github.com/ritchielawrence/cmdow/blob/master/LICENSE.txt)
