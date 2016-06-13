@@ -13,12 +13,14 @@
 
 ## Is Cmdow Malware?<a name="is-cmdow-malware"></a>
 
-**Of course not!** However, not everyone agrees. One of Cmdow's features allow users to hide program windows and it's this feature that has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.
+**Of course not!** However, not everyone agrees... One of Cmdow's many features allows the user to hide program windows and this has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan<sup>[&dagger;](#trojan)</sup>. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.
 
-Don't take my word for it though - view the anti-virus scan results yourself. Download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to [VirusTotal](https://virustotal.com/). You'll end up at this page at a page like this: 
+You can view the anti-virus scan results yourself. Download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to [VirusTotal](https://virustotal.com/). You'll end up at  a page like this: 
 [https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/](https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/) (note, the long hexadecimal string in the URL matches the [SHA256 checksum](https://en.wikipedia.org/wiki/Sha1sum) of cmdow.exe, v1.4.8 in this instance).
 
-If you still have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free [Code::Blocks](http://www.codeblocks.org/) IDE. There's even a Code::Blocks project file ([cmdow.cbp](https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp)) included in the Cmdow download.
+Obviously, if you have any doubts about the safety of Cmdow then don't use it or audit the source code yourself. Auditing shouldn't be too difficult as the code is self explanatory with liberal comments. It compiles without errors or warnings using the free [Code::Blocks](http://www.codeblocks.org/) IDE. There's even a Code::Blocks project file ([cmdow.cbp](https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp)) included in the Cmdow download.
+
+<sup><a name="trojan">&dagger;</a></sup> Ten vendors actually regard passing 0 to the Windows API function [ShowWindowAsync](https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549%28v=vs.85%29.aspx) as enough to create a trojan!
 
 ## Synopsis<a name="synopsis"></a>
 
@@ -28,7 +30,11 @@ It is a small standalone executable. It does not create any temporary files, nor
 
 Cmdow was written with batch file programmers in mind. Particular attention has been paid to Cmdows output making it easy to process with the 'FOR /F' command found in the Windows command processor (cmd.exe).
 
-Cmdow is simple and intuitive to use. To list all its options, type cmdow /?. For detailed help on any option type cmdow /? <option\>. Eg cmdow /? /run.
+Cmdow is simple and intuitive to use. To list all its options, type:-
+
+```batch
+cmdow /?
+```
 
 ## Usage<a name="usage"></a>
 
