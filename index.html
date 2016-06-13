@@ -65,7 +65,8 @@
 
 <p>This form of CMDOW lists window details.</p>
 
-<pre>  CMDOW [window | /T] [/B] [/F] [/P]
+<pre>
+  CMDOW [window | /T] [/B] [/F] [/P]
 
   window  Window to list. Specify a window by its handle (in hex format, eg
           0x1A0142) or caption (window title). Caption is case insensitive.
@@ -129,9 +130,10 @@
           taskbar from flashing, set the following registry value to zero:-
           HKCU\Control Panel\Desktop\ForegroundLockTimeout.
   /FS     Switch the window running this process into full screen mode.
-  /WM     Switch the window running this process into window mode.</pre>
+  /WM     Switch the window running this process into window mode.
+</pre>
 
-  This example batch file activates a different window every ten seconds:-
+<p>This example batch file activates a different window every ten seconds:-</p>
 
 <div class="highlight highlight-source-dosbatch"><pre>
     @<span class="pl-k">ECHO</span> OFF
@@ -175,6 +177,7 @@ possible. Improper use may cause unexpected results and system instability.
   If more than one window matches the specified caption, CMDOW only acts on the
   first one. To override this add the /DBM (Don't Blame Me) switch - DANGEROUS.
   Multiple actions are performed in order, from left to right. Eg:-
+</pre>
 
 <div class="highlight highlight-source-dosbatch"><pre>
     CMDOW 0x0E0144 /hid /<span class="pl-k">ren</span> <span class="pl-s"><span class="pl-pds">"</span>10% complete<span class="pl-pds">"</span></span> /mov 0 0 /siz 300 100 /act /vis</pre></div>
@@ -198,132 +201,117 @@ application associated with the filename extension.
 
   Eg /P instructs Notepad to send the specified file to the default printer,
   then quit. This example prints readme.txt without displaying any windows:-
-</pre>
 
-<div class="highlight highlight-source-dosbatch"><pre>
     CMDOW /RUN /HID notepad /P readme.txt
 
-
   CMDOW can be used to create autorun CDs that work on all Win32 platforms.
-  <span class="pl-k">Copy</span> CMDOW.EXE to the <span class="pl-k">CD</span> and create an autorun.inf file. Here is a sample:-
+  Copy CMDOW.EXE to the CD and create an autorun.inf file. Here is a sample:-
 
+    [autorun]
+    open=cmdow /run /max \video.mpg
+    icon=myicon.ico
+    shell\readme=Read &amp;Me
+    shell\readme\command=cmdow /run \readme.htm
+</pre>
 
-[autorun]
-open=cmdow /run /max \video.mpg
-icon=myicon.ico
-shell\readme=Read &amp;Me
-shell\readme\command=cmdow /run \readme.htm
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples<a name="examples"></a>
+</h2>
 
+<p>View the Cmdow main help screen:-</p>
 
-## Examples
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow /?</pre></div>
 
-View the Cmdow main <span class="pl-k">help</span> screen:-
+View help about the /MOV (move a window) option:-
 
-
-cmdow /?
-
-
-View <span class="pl-k">help</span> about the /MOV (<span class="pl-k">move</span> a window) option:-
-
-
-cmdow /? /mov
-
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow /? /mov</pre></div>
 
 To list details of all windows:-
 
-
-cmdow
-
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow</pre></div>
 
 To list details of only the windows listed on the taskbar:-
 
-
-cmdow /t
-
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow /t</pre></div>
 
 To list details and positions of only the windows listed on the taskbar:-
 
-
-cmdow /t /p
-
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow /t /p</pre></div>
 
 To list details of a particular window:-
 
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow <span class="pl-s"><span class="pl-pds">"</span>untitled - notepad<span class="pl-pds">"</span></span> or Cmdow 0x010052</pre></div>
 
-cmdow <span class="pl-s"><span class="pl-pds">"</span>untitled - notepad<span class="pl-pds">"</span></span> or Cmdow 0x010052
-
-
-where 0x010052 is the window handle of the window titled <span class="pl-s"><span class="pl-pds">"</span>untitled - notepad<span class="pl-pds">"</span></span>.
+where 0x010052 is the window handle of the window titled "untitled - notepad".
 
 Tile all windows vertically:-
 
-
-cmdow /tv
-
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow /tv</pre></div>
 
 Bearing in mind that the Cmdow actions are carried out in the order in which they are specified (that is, from left to right), this example restores, moves, renames and finally activates Calc.exe:-
 
-
-cmdow Calculator /res /mov 100 200 /<span class="pl-k">ren</span> <span class="pl-s"><span class="pl-pds">"</span>New Caption<span class="pl-pds">"</span></span> /act
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow Calculator /res /mov 100 200 /<span class="pl-k">ren</span> <span class="pl-s"><span class="pl-pds">"</span>New Caption<span class="pl-pds">"</span></span> /act</pre></div>
 
 Batch file to activate a different window every 10 seconds:-
 
-
+<div class="highlight highlight-source-dosbatch"><pre>
 @<span class="pl-k">echo</span> off
 :loop
 cmdow /<span class="pl-k">AT</span>
 ping 127.0.0.1 -n 11 <span class="pl-k">&gt;</span>nul
-<span class="pl-k">goto</span> :loop
-
+<span class="pl-k">goto</span> :loop</pre></div>
 
 Batch file to close all windows listed on the taskbar:-
 
-
+<div class="highlight highlight-source-dosbatch"><pre>
 @<span class="pl-k">echo</span> off
 <span class="pl-c">:: Hide this console window so its not shown on taskbar</span>
 cmdow @ /hid
 <span class="pl-k">for</span> /f %%a in ('cmdow /t') do cmdow %%a /<span class="pl-k">cls</span>
 <span class="pl-c">:: Now close this console window</span>
-cmdow @ /<span class="pl-k">cls</span>
-
+cmdow @ /<span class="pl-k">cls</span></pre></div>
 
 Stupid batch file to remove all the buttons from Calculator:-
 
-
+<div class="highlight highlight-source-dosbatch"><pre>
 @<span class="pl-k">echo</span> off
 <span class="pl-c">:: run calc and give it time to fully load</span>
 <span class="pl-k">start</span> calc &amp; ping 127.0.0.1 -n 2 <span class="pl-k">&gt;</span>nul
 <span class="pl-c">:: hide windows at level 2 and whose image is calc</span>
 <span class="pl-k">for</span> /f <span class="pl-s"><span class="pl-pds">"</span>tokens=1-2,8<span class="pl-pds">"</span></span> %%a in ('cmdow') do (
   <span class="pl-k">if</span> /i <span class="pl-s"><span class="pl-pds">"</span>%%c<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>calc<span class="pl-pds">"</span></span> <span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>%%b<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span> cmdow %%a /hid
-)
+)</pre></div>
 
+Batch file to retrieve display resolution. The co-ords of the first window listed by Cmdow is the screen resolution (this window also has a level of zero which can be identifed using FOR /F):-
 
-Batch file to retrieve display resolution. The co-ords of the first window listed by Cmdow is the screen resolution (this window also has a level of zero which can be identifed using <span class="pl-k">FOR</span> /F):-
-
-
+<div class="highlight highlight-source-dosbatch"><pre>
 @<span class="pl-k">echo</span> off
 <span class="pl-k">for</span> /f <span class="pl-s"><span class="pl-pds">"</span>tokens=2,10-11<span class="pl-pds">"</span></span> %%a in ('cmdow /p') do (
   <span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>%%a<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-k">set</span> <span class="pl-s"><span class="pl-pds">"</span>WIDTH=%%b<span class="pl-pds">"</span></span> &amp; <span class="pl-k">set</span> <span class="pl-s"><span class="pl-pds">"</span>HEIGHT=%%c<span class="pl-pds">"</span></span>
 )
-<span class="pl-k">echo</span> Resolution is %WIDTH%x%HEIGHT%
-
+<span class="pl-k">echo</span> Resolution is %WIDTH%x%HEIGHT%</pre></div>
 
 Run a program hidden:-
 
-
-cmdow /run /hid myprog.exe
-
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow /run /hid myprog.exe</pre></div>
 
 Run a batch file hidden passing it parameters:-
 
+<div class="highlight highlight-source-dosbatch"><pre>
+cmdow /run /hid mybat arg1 <span class="pl-s"><span class="pl-pds">"</span>arg 2<span class="pl-pds">"</span></span></pre></div>
 
-cmdow /run /hid mybat arg1 <span class="pl-s"><span class="pl-pds">"</span>arg 2<span class="pl-pds">"</span></span>
+Batch file to alert Administrator if the number of windows shown on the taskbar changes (as might be the case when an application or the operating system generates an error message, or may be backup software is prompting for a tape etc). Loops every 60 seconds until number of windows changes.
 
-
-Batch file to alert Administrator <span class="pl-k">if</span> the number of windows shown on the taskbar changes (as might be the case when an application or the operating system generates an error message, or may be backup software is prompting <span class="pl-k">for</span> a tape etc). Loops every 60 seconds until number of windows changes.
-
-
+<div class="highlight highlight-source-dosbatch"><pre>
 @<span class="pl-k">echo</span> off&amp;<span class="pl-k">setlocal</span>&amp;<span class="pl-k">set</span> LAST=
 cmdow @ /hid
 :loop
@@ -334,25 +322,24 @@ ping 127.0.0.1 -n 61 <span class="pl-k">&gt;</span>nul &amp; <span class="pl-k">
 <span class="pl-k">goto</span> :loop
 :alert
 net send administrator Change in windows on taskbar.
-cmdow @ /vis
+cmdow @ /vis</pre></div>
 
+Creating an Autorun CD. Copy your autorun.inf file and cmdow.exe to the root of the CD. Here is a sample autorun.inf. It also shows how add a context menu for the CD. This could be used to install software required by your CD or to view a readme file etc:-
 
-Creating an Autorun <span class="pl-k">CD</span>. <span class="pl-k">Copy</span> your autorun.inf file and cmdow.exe to the root of the <span class="pl-k">CD</span>. Here is a sample autorun.inf. It also shows how add a context menu <span class="pl-k">for</span> the <span class="pl-k">CD</span>. This could be used to install software required by your <span class="pl-k">CD</span> or to view a readme file etc:-
-
-
+<div class="highlight highlight-source-dosbatch"><pre>
 [autorun]
 open=cmdow /run /max \video.mpg
 icon=myicon.ico
 shell\readme=Read &amp;Me
 shell\readme\command=cmdow /run \readme.htm
 shell\install\=&amp;Install Realplayer
-shell\install\command=rp8-complete2-u1-setup.exe
+shell\install\command=rp8-complete2-u1-setup.exe</pre></div>
 
 Here is another use suggested by a Cmdow user:-
 
-<span class="pl-k">&gt;</span>Cmdow can be used to save the window status and <span class="pl-k">restore</span> it, after the execution of a program. <span class="pl-k">For</span> example, <span class="pl-k">if</span> you are displaying information in a maximised Command <span class="pl-k">Prompt</span> window and then need to <span class="pl-k">call</span> a program (NOTEPAD, perhaps), which gives a second window, the current Command <span class="pl-k">Prompt</span> window is minimised to the taskbar. You would normally need to click on it to <span class="pl-k">restore</span> the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
+Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
 
-
+<div class="highlight highlight-source-dosbatch"><pre>
 <span class="pl-c">:: save the current window status</span>
 <span class="pl-k">for</span> /f <span class="pl-s"><span class="pl-pds">"</span>tokens=4<span class="pl-pds">"</span></span> %%a in ('cmdow @ /b') do <span class="pl-k">set</span> wstate=%%a
 <span class="pl-c">:: call NOTEPAD to display this BATch file (or anything else!)</span>
@@ -360,102 +347,116 @@ Here is another use suggested by a Cmdow user:-
 <span class="pl-c">:: (it is assumed that the user now closes the NOTEPAD window)</span>
 <span class="pl-c">:: if the window status was maximised previously, return it to that state</span>
 <span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>%wstate%<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>Max<span class="pl-pds">"</span></span> cmdow @ /max
-<span class="pl-k">echo</span> Here we are again, back in our maximised window!
+<span class="pl-k">echo</span> Here we are again, back in our maximised window!</pre></div>
 
+## FAQs<a name="faqs"></a>
 
-## FAQs
+How can I disable or hide the desktop?
 
-<span class="pl-k">&gt;</span> How can I disable or hide the desktop?
-
-<span class="pl-k">&gt;&gt;</span> Running Cmdow without any options lists all windows. The window <span class="pl-k">at</span> the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found <span class="pl-k">at</span> the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is <span class="pl-s"><span class="pl-pds">"</span>Program Manager<span class="pl-pds">"</span></span>).
-So running Cmdow <span class="pl-s"><span class="pl-pds">"</span>Program Manager<span class="pl-pds">"</span></span> /hid will hide the deskop. <span class="pl-k">If</span> you have another window titled <span class="pl-s"><span class="pl-pds">"</span>Program Manager<span class="pl-pds">"</span></span>, then you'll need to use an alternative method. See the example scripts.
+&gt;Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
+So running Cmdow "Program Manager" /hid will hide the deskop. If you have another window titled "Program Manager", then you'll need to use an alternative method. See the example scripts.
 
 ----
 
-<span class="pl-k">&gt;</span> On a W2K machine running a number of applications that monitor our servers and networks, I have a batch file that runs Cmdow /<span class="pl-k">AT</span> every 20 seconds. Sometimes Cmdow fails to activate an application window, instead the taskbar flashes blue.
+On a W2K machine running a number of applications that monitor our servers and networks, I have a batch file that runs Cmdow /AT every 20 seconds. Sometimes Cmdow fails to activate an application window, instead the taskbar flashes blue.
 
-<span class="pl-k">&gt;&gt;</span> This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
+&gt;This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
 
-
+<pre>
 HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
+</pre>
 
+<hr>
 
+<p>When I use Cmdow at a command prompt or in a batch file and try to change the console title. Why does the title revert back when Cmdow finishes or when the batch file ends?</p>
 
+<blockquote>
+<p>This has been fixed in version 1.4.1.</p>
+</blockquote>
 
+<hr>
 
-When I use Cmdow <span class="pl-k">at</span> a command <span class="pl-k">prompt</span> or in a batch file and try to change the console <span class="pl-k">title</span>. Why does the <span class="pl-k">title</span> revert back when Cmdow finishes or when the batch file ends?
+<p>How can I undo the effects of tiling, cascading or minimizing all windows?</p>
 
+<blockquote>
+<p>In version 1.4.2 the /UM switch has been superseded by /UW. This new switch will undo the effect of tiling/cascading and minimizing all windows. To maintain compatability with existing scripts, the /UM switch can still be used even though it's no longer documented on Cmdow's helpscreen. /UM now has exactly the same effect as /UW.</p>
+</blockquote>
 
-This has been fixed in version 1.4.1.
+<h2>
+<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Screenshots<a name="screenshots"></a>
+</h2>
 
+<p><img src="cmdow-screenshot0.png" alt="Screenshot of Cmdow"></p>
 
+<p><img src="cmdow-screenshot1.png" alt="Screenshot of Cmdow"></p>
 
+<p><img src="cmdow-screenshot2.png" alt="Screenshot of Cmdow"></p>
 
+<p><img src="cmdow-screenshot3.png" alt="Screenshot of Cmdow"></p>
 
+<p><img src="cmdow-screenshot4.png" alt="Screenshot of Cmdow"></p>
 
-How can I undo the effects of tiling, cascading or minimizing all windows?
+<p><img src="cmdow-screenshot5.png" alt="Screenshot of Cmdow"></p>
 
+<h2>
+<a id="revisions" class="anchor" href="#revisions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Revisions<a name="revisions"></a>
+</h2>
 
-In version 1.4.2 the /UM switch has been superseded by /UW. This new switch will undo the effect of tiling/cascading and minimizing all windows. To maintain compatability with existing scripts, the /UM switch can still be used even though it's no longer documented on Cmdow's helpscreen. /UM now has exactly the same effect as /UW.
+<table>
+<thead>
+<tr>
+<th>Revision</th>
+<th>Date</th>
+<th>Changes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>2001-12-20</td>
+<td>Cmdow created.</td>
+</tr>
+</tbody>
+</table>
 
-
-
-Screenshots
-
-
-
-
-
-
-
-
-
-
-
-
-
-Revisions
-
+<p>+--------+----------+---------------------------------------------------------------------------------+
+|1.1     |2002-02-25|Added /RUN command.                                                              |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>Revision<span class="pl-k">|</span><span class="pl-k">Date</span>      <span class="pl-k">|</span>Changes                                                                          <span class="pl-k">|</span>
-+========+==========+=================================================================================+
-<span class="pl-k">|</span>1.0     <span class="pl-k">|</span>2001-12-20<span class="pl-k">|</span>Cmdow created.                                                                   <span class="pl-k">|</span>
+|1.2     |2002-10-29|Fixed issue caused when conole windows have no title. Enhance /AT feature to     |
+|        |          |restore an activated window if it was minimized.                                 |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.1     <span class="pl-k">|</span>2002-02-25<span class="pl-k">|</span>Added /RUN command.                                                              <span class="pl-k">|</span>
+|1.3     |2002-11-20|Added /FS and /WM options to allow switching between full screen mode and window |
+|        |          |mode.                                                                            |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.2     <span class="pl-k">|</span>2002-10-29<span class="pl-k">|</span>Fixed issue caused when conole windows have no <span class="pl-k">title</span>. Enhance /<span class="pl-k">AT</span> feature to     <span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span><span class="pl-k">restore</span> an activated window <span class="pl-k">if</span> it was minimized.                                 <span class="pl-k">|</span>
+|1.4     |2002-11-07|Added /TOP and /NOT options to allow the setting/clearing of windows 'always on  |
+|        |          |top'. Fixed argument parsing bug for /MOV and /REN options.                      |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.3     <span class="pl-k">|</span>2002-11-20<span class="pl-k">|</span>Added /FS and /WM options to allow switching between full screen <span class="pl-k">mode</span> and window <span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span><span class="pl-k">mode</span>.                                                                            <span class="pl-k">|</span>
+|1.4.1   |2003-05-14|Cmdow can now rename the console window that launched it. Previously the title   |
+|        |          |would revert when Cmdow exited.                                                  |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.4     <span class="pl-k">|</span>2002-11-07<span class="pl-k">|</span>Added /TOP and /NOT options to allow the setting/clearing of windows 'always on  <span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>top'. Fixed argument parsing bug <span class="pl-k">for</span> /MOV and /<span class="pl-k">REN</span> options.                      <span class="pl-k">|</span>
+|1.4.2   |2003-08-18|/UM seperseded by /UW switch. See FAQ's for details.                             |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.4.1   <span class="pl-k">|</span>2003-05-14<span class="pl-k">|</span>Cmdow can now <span class="pl-k">rename</span> the console window that launched it. Previously the <span class="pl-k">title</span>   <span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>would revert when Cmdow exited.                                                  <span class="pl-k">|</span>
+|1.4.3   |2004-12-19|Fixed bug where renaming the current console window would fail if the new caption|
+|        |          |title contained whitespace.                                                      |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.4.2   <span class="pl-k">|</span>2003-08-18<span class="pl-k">|</span>/UM seperseded by /UW switch. See FAQ's <span class="pl-k">for</span> details.                             <span class="pl-k">|</span>
+|1.4.4   |2014-11-08|Cmdow is now open source software released under the MIT license.                |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.4.3   <span class="pl-k">|</span>2004-12-19<span class="pl-k">|</span>Fixed bug where renaming the current console window would fail <span class="pl-k">if</span> the new caption<span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span><span class="pl-k">title</span> contained whitespace.                                                      <span class="pl-k">|</span>
+|1.4.7   |2014-12-29|Wildcards can now be used to filter window captions. Also now possible to perform|
+|        |          |actions on multiple windows. Handle display is extended to eight digits. Level is|
+|        |          |dynamically sized. Class name is dynamically sized. Newlines in the caption are  |
+|        |          |converted to underscore. Sizes are based on the entire window list, not just what|
+|        |          |is displayed. Help pages updated. Internally: Remove process name length test, as|
+|        |          |WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted |
+|        |          |some if/else assignments for ternary operator.                                   |
 +--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.4.4   <span class="pl-k">|</span>2014-11-08<span class="pl-k">|</span>Cmdow is now open source software released under the MIT license.                <span class="pl-k">|</span>
-+--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.4.7   <span class="pl-k">|</span>2014-12-29<span class="pl-k">|</span>Wildcards can now be used to filter window captions. Also now possible to perform<span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>actions on multiple windows. Handle display is extended to eight digits. Level is<span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>dynamically sized. Class name is dynamically sized. Newlines in the caption are  <span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>converted to underscore. Sizes are based on the entire window list, not just what<span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>is displayed. <span class="pl-k">Help</span> pages updated. Internally: Remove process name length test, as<span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted <span class="pl-k">|</span>
-<span class="pl-k">|</span>        <span class="pl-k">|</span>          <span class="pl-k">|</span>some <span class="pl-k">if</span>/<span class="pl-k">else</span> assignments <span class="pl-k">for</span> ternary operator.                                   <span class="pl-k">|</span>
-+--------+----------+---------------------------------------------------------------------------------+
-<span class="pl-k">|</span>1.4.8   <span class="pl-k">|</span>2014-12-30<span class="pl-k">|</span><span class="pl-k">Help</span> page typos corrected. Output can handle 5-digit PIDs.                       <span class="pl-k">|</span>
-+--------+----------+---------------------------------------------------------------------------------+
+|1.4.8   |2014-12-30|Help page typos corrected. Output can handle 5-digit PIDs.                       |
++--------+----------+---------------------------------------------------------------------------------+</p>
 
-Copyright and License
+<h2>
+<a id="copyright-and-license" class="anchor" href="#copyright-and-license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Copyright and License<a name="copyright-and-license"></a>
+</h2>
 
-Code and documentation copyright 2001-2014 Ritchie Lawrence. Code released under MIT License</pre></div></pre>
+<p>Code and documentation copyright 2001-2014 Ritchie Lawrence. Code released under <a href="LICENSE.txt">MIT License</a></p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/ritchielawrence/cmdow">Cmdow</a> is maintained by <a href="https://github.com/ritchielawrence">ritchielawrence</a>.</span>
