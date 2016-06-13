@@ -322,17 +322,17 @@ shell\install\command=rp8-complete2-u1-setup.exe</code></pre>
 
 Here is another use suggested by a Cmdow user:-
 
-Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
+>Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
 
 <pre lang="batch"><code>
-:: save the current window status
-for /f "tokens=4" %%a in ('cmdow @ /b') do set wstate=%%a
-:: call NOTEPAD to display this BATch file (or anything else!)
-call notepad "%~f0"
-:: (it is assumed that the user now closes the NOTEPAD window)
-:: if the window status was maximised previously, return it to that state
-if "%wstate%"=="Max" cmdow @ /max
-echo Here we are again, back in our maximised window!
+  :: save the current window status
+  for /f "tokens=4" %%a in ('cmdow @ /b') do set wstate=%%a
+  :: call NOTEPAD to display this BATch file (or anything else!)
+  call notepad "%~f0"
+  :: (it is assumed that the user now closes the NOTEPAD window)
+  :: if the window status was maximised previously, return it to that state
+  if "%wstate%"=="Max" cmdow @ /max
+  echo Here we are again, back in our maximised window!
 </code></pre>
 
 ## FAQs<a name="faqs"></a>
@@ -349,7 +349,7 @@ On a W2K machine running a number of applications that monitor our servers and n
 >This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
 
 <pre>
-HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
+  HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
 </pre>
 
 ----
@@ -366,56 +366,44 @@ How can I undo the effects of tiling, cascading or minimizing all windows?
 
 ## Screenshots<a name="screenshots"></a>
 
-![Screenshot of Cmdow](cmdow-screenshot0.png)
+![Screenshot of Cmdow](https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot0.png)
 
-![Screenshot of Cmdow](cmdow-screenshot1.png)
+![Screenshot of Cmdow](https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot1.png)
 
-![Screenshot of Cmdow](cmdow-screenshot2.png)
+![Screenshot of Cmdow](https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot2.png)
 
-![Screenshot of Cmdow](cmdow-screenshot3.png)
+![Screenshot of Cmdow](https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot3.png)
 
-![Screenshot of Cmdow](cmdow-screenshot4.png)
+![Screenshot of Cmdow](https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot4.png)
 
-![Screenshot of Cmdow](cmdow-screenshot5.png)
+![Screenshot of Cmdow](https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot5.png)
 
 ## Revisions<a name="revisions"></a>
 
 Revision | Date | Changes
----------|------|-------------
+--|--|--
 1.0 | 2001-12-20 | Cmdow created.
-
-+--------+----------+---------------------------------------------------------------------------------+
-|1.1     |2002-02-25|Added /RUN command.                                                              |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.2     |2002-10-29|Fixed issue caused when conole windows have no title. Enhance /AT feature to     |
-|        |          |restore an activated window if it was minimized.                                 |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.3     |2002-11-20|Added /FS and /WM options to allow switching between full screen mode and window |
-|        |          |mode.                                                                            |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.4     |2002-11-07|Added /TOP and /NOT options to allow the setting/clearing of windows 'always on  |
-|        |          |top'. Fixed argument parsing bug for /MOV and /REN options.                      |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.4.1   |2003-05-14|Cmdow can now rename the console window that launched it. Previously the title   |
-|        |          |would revert when Cmdow exited.                                                  |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.4.2   |2003-08-18|/UM seperseded by /UW switch. See FAQ's for details.                             |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.4.3   |2004-12-19|Fixed bug where renaming the current console window would fail if the new caption|
-|        |          |title contained whitespace.                                                      |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.4.4   |2014-11-08|Cmdow is now open source software released under the MIT license.                |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.4.7   |2014-12-29|Wildcards can now be used to filter window captions. Also now possible to perform|
-|        |          |actions on multiple windows. Handle display is extended to eight digits. Level is|
-|        |          |dynamically sized. Class name is dynamically sized. Newlines in the caption are  |
-|        |          |converted to underscore. Sizes are based on the entire window list, not just what|
-|        |          |is displayed. Help pages updated. Internally: Remove process name length test, as|
-|        |          |WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted |
-|        |          |some if/else assignments for ternary operator.                                   |
-+--------+----------+---------------------------------------------------------------------------------+
-|1.4.8   |2014-12-30|Help page typos corrected. Output can handle 5-digit PIDs.                       |
-+--------+----------+---------------------------------------------------------------------------------+
+--|--|--
+1.1 | 2002-02-25 | Added /RUN command.
+--|--|--
+1.2 | 2002-10-29 | Fixed issue caused when conole windows have no title. Enhance /AT feature to restore an activated window if it was minimized.                                 |
+--|--|--
+1.3 | 2002-11-20 | Added /FS and /WM options to allow switching between full screen mode and window mode.
+--|--|--
+1.4 | 2002-11-07 | Added /TOP and /NOT options to allow the setting/clearing of windows 'always on top'. Fixed argument parsing bug for /MOV and /REN options.
+--|--|--
+1.4.1 | 2003-05-14 | Cmdow can now rename the console window that launched it. Previously the title would revert when Cmdow exited.
+--|--|--
+1.4.2 | 2003-08-18 | /UM seperseded by /UW switch. See FAQ's for details.
+--|--|--
+1.4.3 | 2004-12-19 | Fixed bug where renaming the current console window would fail if the new caption title contained whitespace.
+--|--|--
+1.4.4 | 2014-11-08 | Cmdow is now open source software released under the MIT license.
+--|--|--
+1.4.7 | 2014-12-29 | Wildcards can now be used to filter window captions. Also now possible to perform actions on multiple windows. Handle display is extended to eight digits. Level is dynamically sized. Class name is dynamically sized. Newlines in the caption are converted to underscore. Sizes are based on the entire window list, not just what is displayed. Help pages updated. Internally: Remove process name length test, as WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted some if/else assignments for ternary operator.
+--|--|--
+1.4.8 | 2014-12-30 | Help page typos corrected. Output can handle 5-digit PIDs.
+--|--|--
 
 ## Copyright and License<a name="copyright-and-license"></a>
 
