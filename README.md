@@ -36,7 +36,8 @@ Cmdow is simple and intuitive to use. To list all its options, type cmdow /?. Fo
 
 This form of CMDOW lists window details.
 
-<pre>  CMDOW [window | /T] [/B] [/F] [/P]
+<pre>
+  CMDOW [window | /T] [/B] [/F] [/P]
 
   window  Window to list. Specify a window by its handle (in hex format, eg
           0x1A0142) or caption (window title). Caption is case insensitive.
@@ -99,9 +100,10 @@ This form of CMDOW performs a single action typically affecting all windows.
           taskbar from flashing, set the following registry value to zero:-
           HKCU\Control Panel\Desktop\ForegroundLockTimeout.
   /FS     Switch the window running this process into full screen mode.
-  /WM     Switch the window running this process into window mode.</pre>
+  /WM     Switch the window running this process into window mode.
+</pre>
 
-  This example batch file activates a different window every ten seconds:-
+This example batch file activates a different window every ten seconds:-
 
 <pre lang="batch"><code>
     @ECHO OFF
@@ -146,6 +148,7 @@ possible. Improper use may cause unexpected results and system instability.
   If more than one window matches the specified caption, CMDOW only acts on the
   first one. To override this add the /DBM (Don't Blame Me) switch - DANGEROUS.
   Multiple actions are performed in order, from left to right. Eg:-
+</pre>
 
 <pre lang="batch"><code>
     CMDOW 0x0E0144 /hid /ren "10% complete" /mov 0 0 /siz 300 100 /act /vis
@@ -170,22 +173,18 @@ application associated with the filename extension.
 
   Eg /P instructs Notepad to send the specified file to the default printer,
   then quit. This example prints readme.txt without displaying any windows:-
-</pre>
 
-<pre lang="batch"><code>
     CMDOW /RUN /HID notepad /P readme.txt
-</code><pre>
 
   CMDOW can be used to create autorun CDs that work on all Win32 platforms.
   Copy CMDOW.EXE to the CD and create an autorun.inf file. Here is a sample:-
 
-<pre lang="batch"><code>
-[autorun]
-open=cmdow /run /max \video.mpg
-icon=myicon.ico
-shell\readme=Read &Me
-shell\readme\command=cmdow /run \readme.htm
-</code></pre>
+    [autorun]
+    open=cmdow /run /max \video.mpg
+    icon=myicon.ico
+    shell\readme=Read &Me
+    shell\readme\command=cmdow /run \readme.htm
+</pre>
 
 ## Examples<a name="examples"></a>
 
@@ -238,6 +237,7 @@ Bearing in mind that the Cmdow actions are carried out in the order in which the
 <pre lang="batch"><code>
 cmdow Calculator /res /mov 100 200 /ren "New Caption" /act
 </code></pre>
+
 Batch file to activate a different window every 10 seconds:-
 
 <pre lang="batch"><code>
@@ -322,7 +322,7 @@ shell\install\command=rp8-complete2-u1-setup.exe</code></pre>
 
 Here is another use suggested by a Cmdow user:-
 
->Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
+Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
 
 <pre lang="batch"><code>
 :: save the current window status
@@ -337,31 +337,32 @@ echo Here we are again, back in our maximised window!
 
 ## FAQs<a name="faqs"></a>
 
-> How can I disable or hide the desktop?
+How can I disable or hide the desktop?
 
->> Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
+>Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
 So running Cmdow "Program Manager" /hid will hide the deskop. If you have another window titled "Program Manager", then you'll need to use an alternative method. See the example scripts.
 
 ----
 
-> On a W2K machine running a number of applications that monitor our servers and networks, I have a batch file that runs Cmdow /AT every 20 seconds. Sometimes Cmdow fails to activate an application window, instead the taskbar flashes blue.
+On a W2K machine running a number of applications that monitor our servers and networks, I have a batch file that runs Cmdow /AT every 20 seconds. Sometimes Cmdow fails to activate an application window, instead the taskbar flashes blue.
 
->> This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
+>This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
 
 <pre>
 HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
 </pre>
-----
-
-> When I use Cmdow at a command prompt or in a batch file and try to change the console title. Why does the title revert back when Cmdow finishes or when the batch file ends?
-
->> This has been fixed in version 1.4.1.
 
 ----
 
-> How can I undo the effects of tiling, cascading or minimizing all windows?
+When I use Cmdow at a command prompt or in a batch file and try to change the console title. Why does the title revert back when Cmdow finishes or when the batch file ends?
 
->> In version 1.4.2 the /UM switch has been superseded by /UW. This new switch will undo the effect of tiling/cascading and minimizing all windows. To maintain compatability with existing scripts, the /UM switch can still be used even though it's no longer documented on Cmdow's helpscreen. /UM now has exactly the same effect as /UW.
+>This has been fixed in version 1.4.1.
+
+----
+
+How can I undo the effects of tiling, cascading or minimizing all windows?
+
+>In version 1.4.2 the /UM switch has been superseded by /UW. This new switch will undo the effect of tiling/cascading and minimizing all windows. To maintain compatability with existing scripts, the /UM switch can still be used even though it's no longer documented on Cmdow's helpscreen. /UM now has exactly the same effect as /UW.
 
 ## Screenshots<a name="screenshots"></a>
 
