@@ -243,7 +243,7 @@ Batch file to activate a different window every 10 seconds:-
 @echo off
 :loop
 cmdow /AT
-ping 127.0.0.1 -n 11 \>nul
+ping 127.0.0.1 -n 11 >nul
 goto :loop
 </code></pre>
 
@@ -263,7 +263,7 @@ Stupid batch file to remove all the buttons from Calculator:-
 <pre lang="batch"><code>
 @echo off
 :: run calc and give it time to fully load
-start calc & ping 127.0.0.1 -n 2 \>nul
+start calc & ping 127.0.0.1 -n 2 >nul
 :: hide windows at level 2 and whose image is calc
 for /f "tokens=1-2,8" %%a in ('cmdow') do (
   if /i "%%c"=="calc" if "%%b"=="2" cmdow %%a /hid
@@ -298,7 +298,7 @@ Batch file to alert Administrator if the number of windows shown on the taskbar 
 @echo off&setlocal&set LAST=
 cmdow @ /hid
 :loop
-ping 127.0.0.1 -n 61 \>nul & set "THIS=0"
+ping 127.0.0.1 -n 61 >nul & set "THIS=0"
 for /f %%a in ('cmdow /t /b') do set /a THIS+=1
 if not defined LAST set "LAST=%THIS%"
 if %THIS% NEQ %LAST% (goto :alert) else (set LAST=%THIS%)
@@ -322,31 +322,31 @@ shell\install\command=rp8-complete2-u1-setup.exe
 
 Here is another use suggested by a Cmdow user:-
 
->Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
+> Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:
 
 <pre lang="batch"><code>
-  :: save the current window status
-  for /f "tokens=4" %%a in ('cmdow @ /b') do set wstate=%%a
-  :: call NOTEPAD to display this BATch file (or anything else!)
-  call notepad "%~f0"
-  :: (it is assumed that the user now closes the NOTEPAD window)
-  :: if the window status was maximised previously, return it to that state
-  if "%wstate%"=="Max" cmdow @ /max
-  echo Here we are again, back in our maximised window!
+:: save the current window status
+for /f "tokens=4" %%a in ('cmdow @ /b') do set wstate=%%a
+:: call NOTEPAD to display this BATch file (or anything else!)
+call notepad "%~f0"
+:: (it is assumed that the user now closes the NOTEPAD window)
+:: if the window status was maximised previously, return it to that state
+if "%wstate%"=="Max" cmdow @ /max
+echo Here we are again, back in our maximised window!
 </code></pre>
 
 ## FAQs<a name="faqs"></a>
 
 How can I disable or hide the desktop?
 
->Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
+> Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
 So running Cmdow "Program Manager" /hid will hide the deskop. If you have another window titled "Program Manager", then you'll need to use an alternative method. See the example scripts.
 
 ---
 
 On a W2K machine running a number of applications that monitor our servers and networks, I have a batch file that runs Cmdow /AT every 20 seconds. Sometimes Cmdow fails to activate an application window, instead the taskbar flashes blue.
 
->This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
+> This is a new 'feature' of W2K. Its known as Foreground Lock Timeout, and basically prevents another application setting the foreground window. You can safely disable this feature using TweakUI or by setting the value of this registry key to zero:-
 
 <pre>
   HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
@@ -356,13 +356,13 @@ On a W2K machine running a number of applications that monitor our servers and n
 
 When I use Cmdow at a command prompt or in a batch file and try to change the console title. Why does the title revert back when Cmdow finishes or when the batch file ends?
 
->This has been fixed in version 1.4.1.
+> This has been fixed in version 1.4.1.
 
 ---
 
 How can I undo the effects of tiling, cascading or minimizing all windows?
 
->In version 1.4.2 the /UM switch has been superseded by /UW. This new switch will undo the effect of tiling/cascading and minimizing all windows. To maintain compatability with existing scripts, the /UM switch can still be used even though it's no longer documented on Cmdow's helpscreen. /UM now has exactly the same effect as /UW.
+> In version 1.4.2 the /UM switch has been superseded by /UW. This new switch will undo the effect of tiling/cascading and minimizing all windows. To maintain compatability with existing scripts, the /UM switch can still be used even though it's no longer documented on Cmdow's helpscreen. /UM now has exactly the same effect as /UW.
 
 ## Screenshots<a name="screenshots"></a>
 
@@ -383,27 +383,16 @@ How can I undo the effects of tiling, cascading or minimizing all windows?
 Revision | Date | Changes
 ---|---|---
 1.0 | 2001-12-20 | Cmdow created.
----|---|---
 1.1 | 2002-02-25 | Added /RUN command.
----|---|---
 1.2 | 2002-10-29 | Fixed issue caused when conole windows have no title. Enhance /AT feature to restore an activated window if it was minimized.
----|---|---
 1.3 | 2002-11-20 | Added /FS and /WM options to allow switching between full screen mode and window mode.
----|---|---
 1.4 | 2002-11-07 | Added /TOP and /NOT options to allow the setting/clearing of windows 'always on top'. Fixed argument parsing bug for /MOV and /REN options.
----|---|---
 1.4.1 | 2003-05-14 | Cmdow can now rename the console window that launched it. Previously the title would revert when Cmdow exited.
----|---|---
 1.4.2 | 2003-08-18 | /UM seperseded by /UW switch. See FAQ's for details.
----|---|---
 1.4.3 | 2004-12-19 | Fixed bug where renaming the current console window would fail if the new caption title contained whitespace.
----|---|---
 1.4.4 | 2014-11-08 | Cmdow is now open source software released under the MIT license.
----|---|---
 1.4.7 | 2014-12-29 | Wildcards can now be used to filter window captions. Also now possible to perform actions on multiple windows. Handle display is extended to eight digits. Level is dynamically sized. Class name is dynamically sized. Newlines in the caption are converted to underscore. Sizes are based on the entire window list, not just what is displayed. Help pages updated. Internally: Remove process name length test, as WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted some if/else assignments for ternary operator.
----|---|---
 1.4.8 | 2014-12-30 | Help page typos corrected. Output can handle 5-digit PIDs.
----|---|---
 
 ## Copyright and License<a name="copyright-and-license"></a>
 
