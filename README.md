@@ -13,7 +13,7 @@
 
 ## Is Cmdow Malware?<a name="is-cmdow-malware"></a>
 
-**Of course not!** However, not everyone agrees... One of Cmdow's many features allows the user to hide program windows and this has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan<sup>[&dagger;](#trojan)</sup>. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.
+**Of course not!** However, not everyone agrees... One of Cmdow's many features allows the user to hide program windows which has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan<sup>[&dagger;](#trojan)</sup>. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.
 
 You can view the anti-virus scan results yourself. Download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to [VirusTotal](https://virustotal.com/). You'll end up at  a page like this: 
 [https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/](https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/) (note, the long hexadecimal string in the URL matches the [SHA256 checksum](https://en.wikipedia.org/wiki/Sha1sum) of cmdow.exe, v1.4.8 in this instance).
