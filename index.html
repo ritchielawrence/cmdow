@@ -40,12 +40,12 @@
 <a id="is-cmdow-malware" class="anchor" href="#is-cmdow-malware" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Is Cmdow Malware?<a name="is-cmdow-malware"></a>
 </h2>
 
-<p><strong>Of course not!</strong> However, one of its features allows the user to hide program windows and this has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan, whilst the other 60% regard Cmdow as completely safe.</p>
+<p><strong>Of course not!</strong> However, not everyone agrees. One of Cmdow's features allow users to hide program windows and it's this feature that has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.</p>
 
-<p>To view the anti-virus scan results yourself, download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to <a href="https://virustotal.com/">VirusTotal</a>. You'll end up at this page at a page like this: 
+<p>Don't take my word for it though - view the anti-virus scan results yourself. Download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to <a href="https://virustotal.com/">VirusTotal</a>. You'll end up at this page at a page like this: 
 <a href="https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/">https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/</a> (note, the long hexadecimal string in the URL matches the <a href="https://en.wikipedia.org/wiki/Sha1sum">SHA256 checksum</a> of cmdow.exe, v1.4.8 in this instance).</p>
 
-<p>If you have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free <a href="http://www.codeblocks.org/">Code::Blocks</a> IDE. There's even a Code::Blocks project file (<a href="https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp">cmdow.cbp</a>) included in the Cmdow download.</p>
+<p>If you still have any doubts about the safety of Cmdow, you should audit the source code and compile it yourself. This is not a difficult task as the source code is self explanatory with liberal comments and compiles without errors or warnings using the free <a href="http://www.codeblocks.org/">Code::Blocks</a> IDE. There's even a Code::Blocks project file (<a href="https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp">cmdow.cbp</a>) included in the Cmdow download.</p>
 
 <h2>
 <a id="synopsis" class="anchor" href="#synopsis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Synopsis<a name="synopsis"></a>
@@ -133,16 +133,9 @@
   /WM     Switch the window running this process into window mode.
 </pre>
 
-<p>This example batch file activates a different window every ten seconds:-</p>
-
-<div class="highlight highlight-source-dosbatch"><pre>
-    @<span class="pl-k">ECHO</span> OFF
-    :LOOP
-    CMDOW /<span class="pl-k">AT</span> &amp; PING 127.0.0.1 -n 11 <span class="pl-k">&gt;</span>NUL &amp; <span class="pl-k">GOTO</span> :LOOP</pre></div>
-
-This form of CMDOW performs specified action(s) on the specified window(s).
+<p>This form of CMDOW performs specified action(s) on the specified window(s).
 Some of these commands allow you to manipulate windows in ways not normally
-possible. Improper use may cause unexpected results and system instability.
+possible. Improper use may cause unexpected results and system instability.</p>
 
 <pre>
   CMDOW window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]}
@@ -177,13 +170,12 @@ possible. Improper use may cause unexpected results and system instability.
   If more than one window matches the specified caption, CMDOW only acts on the
   first one. To override this add the /DBM (Don't Blame Me) switch - DANGEROUS.
   Multiple actions are performed in order, from left to right. Eg:-
+
+    CMDOW 0x0E0144 /hid /ren "10% complete" /mov 0 0 /siz 300 100 /act /vis
 </pre>
 
-<div class="highlight highlight-source-dosbatch"><pre>
-    CMDOW 0x0E0144 /hid /<span class="pl-k">ren</span> <span class="pl-s"><span class="pl-pds">"</span>10% complete<span class="pl-pds">"</span></span> /mov 0 0 /siz 300 100 /act /vis</pre></div>
-
-This form of CMDOW executes the specified file or opens it using the
-application associated with the filename extension.
+<p>This form of CMDOW executes the specified file or opens it using the
+application associated with the filename extension.</p>
 
 <pre>
   CMDOW /RUN [state] file [args]
@@ -198,27 +190,128 @@ application associated with the filename extension.
   file    File to execute/open. Use double quotes if filename contains spaces.
   args    Optional arguments passed on to the application. Specify any args
           exactly as you would if executing/opening the file directly.
-
-  Eg /P instructs Notepad to send the specified file to the default printer,
-  then quit. This example prints readme.txt without displaying any windows:-
-
-    CMDOW /RUN /HID notepad /P readme.txt
-
-  CMDOW can be used to create autorun CDs that work on all Win32 platforms.
-  Copy CMDOW.EXE to the CD and create an autorun.inf file. Here is a sample:-
-
-    [autorun]
-    open=cmdow /run /max \video.mpg
-    icon=myicon.ico
-    shell\readme=Read &amp;Me
-    shell\readme\command=cmdow /run \readme.htm
 </pre>
 
 <h2>
 <a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples<a name="examples"></a>
 </h2>
 
-<p>View the Cmdow main help screen</p>
+<p>View the Cmdow main help screen:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow /?</pre></div>
+
+<p>View help about the /MOV (move a window) option:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow /? /mov</pre></div>
+
+<p>To list details of all windows:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow</pre></div>
+
+<p>To list details of only the windows listed on the taskbar:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow /t</pre></div>
+
+<p>To list details and positions of only the windows listed on the taskbar:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow /t /p</pre></div>
+
+<p>To list details of a particular window:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow <span class="pl-s"><span class="pl-pds">"</span>untitled - notepad<span class="pl-pds">"</span></span> or Cmdow 0x010052</pre></div>
+
+<p>where 0x010052 is the window handle of the window titled "untitled - notepad".</p>
+
+<p>Tile all windows vertically:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow /tv</pre></div>
+
+<p>Bearing in mind that the Cmdow actions are carried out in the order in which they are specified (that is, from left to right), this example restores, moves, renames and finally activates Calc.exe:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow Calculator /res /mov 100 200 /<span class="pl-k">ren</span> <span class="pl-s"><span class="pl-pds">"</span>New Caption<span class="pl-pds">"</span></span> /act</pre></div>
+
+<p>Batch file to activate a different window every 10 seconds:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>@<span class="pl-k">echo</span> off
+:loop
+cmdow /<span class="pl-k">AT</span>
+ping 127.0.0.1 -n 11 <span class="pl-k">&gt;</span>nul
+<span class="pl-k">goto</span> :loop</pre></div>
+
+<p>Batch file to close all windows listed on the taskbar:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>@<span class="pl-k">echo</span> off
+<span class="pl-c">:: Hide this console window so its not shown on taskbar</span>
+cmdow @ /hid
+<span class="pl-k">for</span> /f %%a in ('cmdow /t') do cmdow %%a /<span class="pl-k">cls</span>
+<span class="pl-c">:: Now close this console window</span>
+cmdow @ /<span class="pl-k">cls</span></pre></div>
+
+<p>Stupid batch file to remove all the buttons from Calculator:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>@<span class="pl-k">echo</span> off
+<span class="pl-c">:: run calc and give it time to fully load</span>
+<span class="pl-k">start</span> calc &amp; ping 127.0.0.1 -n 2 <span class="pl-k">&gt;</span>nul
+<span class="pl-c">:: hide windows at level 2 and whose image is calc</span>
+<span class="pl-k">for</span> /f <span class="pl-s"><span class="pl-pds">"</span>tokens=1-2,8<span class="pl-pds">"</span></span> %%a in ('cmdow') do (
+  <span class="pl-k">if</span> /i <span class="pl-s"><span class="pl-pds">"</span>%%c<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>calc<span class="pl-pds">"</span></span> <span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>%%b<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>2<span class="pl-pds">"</span></span> cmdow %%a /hid
+)</pre></div>
+
+<p>Batch file to retrieve display resolution. The co-ords of the first window listed by Cmdow is the screen resolution (this window also has a level of zero which can be identifed using FOR /F):-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>@<span class="pl-k">echo</span> off
+<span class="pl-k">for</span> /f <span class="pl-s"><span class="pl-pds">"</span>tokens=2,10-11<span class="pl-pds">"</span></span> %%a in ('cmdow /p') do (
+  <span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>%%a<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-k">set</span> <span class="pl-s"><span class="pl-pds">"</span>WIDTH=%%b<span class="pl-pds">"</span></span> &amp; <span class="pl-k">set</span> <span class="pl-s"><span class="pl-pds">"</span>HEIGHT=%%c<span class="pl-pds">"</span></span>
+)
+<span class="pl-k">echo</span> Resolution is %WIDTH%x%HEIGHT%</pre></div>
+
+<p>Run a program hidden:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow /run /hid myprog.exe</pre></div>
+
+<p>Run a batch file hidden passing it parameters:-</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>cmdow /run /hid mybat arg1 <span class="pl-s"><span class="pl-pds">"</span>arg 2<span class="pl-pds">"</span></span></pre></div>
+
+<p>Batch file to alert Administrator if the number of windows shown on the taskbar changes (as might be the case when an application or the operating system generates an error message, or may be backup software is prompting for a tape etc). Loops every 60 seconds until number of windows changes.</p>
+
+<div class="highlight highlight-source-dosbatch"><pre>@<span class="pl-k">echo</span> off&amp;<span class="pl-k">setlocal</span>&amp;<span class="pl-k">set</span> LAST=
+cmdow @ /hid
+:loop
+ping 127.0.0.1 -n 61 <span class="pl-k">&gt;</span>nul &amp; <span class="pl-k">set</span> <span class="pl-s"><span class="pl-pds">"</span>THIS=0<span class="pl-pds">"</span></span>
+<span class="pl-k">for</span> /f %%a in ('cmdow /t /b') do <span class="pl-k">set</span> /a THIS+=1
+<span class="pl-k">if not defined</span> LAST <span class="pl-k">set</span> <span class="pl-s"><span class="pl-pds">"</span>LAST=%THIS%<span class="pl-pds">"</span></span>
+<span class="pl-k">if</span> %THIS% <span class="pl-k">NEQ</span> %LAST% (<span class="pl-k">goto</span> :alert) <span class="pl-k">else</span> (<span class="pl-k">set</span> LAST=%THIS%)
+<span class="pl-k">goto</span> :loop
+:alert
+net send administrator Change in windows on taskbar.
+cmdow @ /vis</pre></div>
+
+<p>Creating an Autorun CD. Copy your autorun.inf file and cmdow.exe to the root of the CD. Here is a sample autorun.inf. It also shows how add a context menu for the CD. This could be used to install software required by your CD or to view a readme file etc:-</p>
+
+<pre lang="text"><code>[autorun]
+open=cmdow /run /max \video.mpg
+icon=myicon.ico
+shell\readme=Read &amp;Me
+shell\readme\command=cmdow /run \readme.htm
+shell\install\=&amp;Install Realplayer
+shell\install\command=rp8-complete2-u1-setup.exe
+</code></pre>
+
+<p>Here is another use suggested by a Cmdow user:-</p>
+
+<blockquote>
+<p>Cmdow can be used to save the window status and restore it, after the execution of a program. For example, if you are displaying information in a maximised Command Prompt window and then need to call a program (NOTEPAD, perhaps), which gives a second window, the current Command Prompt window is minimised to the taskbar. You would normally need to click on it to restore the original window and give it the focus. You can use CMDOW to save the status of the window, and cause it to be restored automatically in a maximised form, using the following:</p>
+</blockquote>
+
+<div class="highlight highlight-source-dosbatch"><pre><span class="pl-c">:: save the current window status</span>
+<span class="pl-k">for</span> /f <span class="pl-s"><span class="pl-pds">"</span>tokens=4<span class="pl-pds">"</span></span> %%a in ('cmdow @ /b') do <span class="pl-k">set</span> wstate=%%a
+<span class="pl-c">:: call NOTEPAD to display this BATch file (or anything else!)</span>
+<span class="pl-k">call</span> notepad <span class="pl-s"><span class="pl-pds">"</span>%~f0<span class="pl-pds">"</span></span>
+<span class="pl-c">:: (it is assumed that the user now closes the NOTEPAD window)</span>
+<span class="pl-c">:: if the window status was maximised previously, return it to that state</span>
+<span class="pl-k">if</span> <span class="pl-s"><span class="pl-pds">"</span>%wstate%<span class="pl-pds">"</span></span>==<span class="pl-s"><span class="pl-pds">"</span>Max<span class="pl-pds">"</span></span> cmdow @ /max
+<span class="pl-k">echo</span> Here we are again, back in our maximised window!</pre></div>
 
 <h2>
 <a id="faqs" class="anchor" href="#faqs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FAQs<a name="faqs"></a>
@@ -240,7 +333,7 @@ So running Cmdow "Program Manager" /hid will hide the deskop. If you have anothe
 </blockquote>
 
 <pre>
-  HKEY_CURRENT_USER\\Control Panel\\Desktop\\ForegroundLockTimeout
+  HKEY_CURRENT_USER\Control Panel\Desktop\ForegroundLockTimeout
 </pre>
 
 <hr>
@@ -263,17 +356,17 @@ So running Cmdow "Program Manager" /hid will hide the deskop. If you have anothe
 <a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Screenshots<a name="screenshots"></a>
 </h2>
 
-<p><img src="https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot0.png" alt="Screenshot of Cmdow"></p>
+<p><img src="https://raw.githubusercontent.com/ritchielawrence/cmdow/master/cmdow-screenshot0.png" alt="Screenshot of Cmdow"></p>
 
-<p><img src="https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot1.png" alt="Screenshot of Cmdow"></p>
+<p><img src="https://raw.githubusercontent.com/ritchielawrence/cmdow/master/cmdow-screenshot1.png" alt="Screenshot of Cmdow"></p>
 
-<p><img src="https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot2.png" alt="Screenshot of Cmdow"></p>
+<p><img src="https://raw.githubusercontent.com/ritchielawrence/cmdow/master/cmdow-screenshot2.png" alt="Screenshot of Cmdow"></p>
 
-<p><img src="https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot3.png" alt="Screenshot of Cmdow"></p>
+<p><img src="https://raw.githubusercontent.com/ritchielawrence/cmdow/master/cmdow-screenshot3.png" alt="Screenshot of Cmdow"></p>
 
-<p><img src="https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot4.png" alt="Screenshot of Cmdow"></p>
+<p><img src="https://raw.githubusercontent.com/ritchielawrence/cmdow/master/cmdow-screenshot4.png" alt="Screenshot of Cmdow"></p>
 
-<p><img src="https://github.com/ritchielawrence/cmdow/blob/master/cmdow-screenshot5.png" alt="Screenshot of Cmdow"></p>
+<p><img src="https://raw.githubusercontent.com/ritchielawrence/cmdow/master/cmdow-screenshot5.png" alt="Screenshot of Cmdow"></p>
 
 <h2>
 <a id="revisions" class="anchor" href="#revisions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Revisions<a name="revisions"></a>
