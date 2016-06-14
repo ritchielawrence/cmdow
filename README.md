@@ -364,17 +364,17 @@ How can I undo the effects of tiling, cascading or minimizing all windows?
 
 Revision | Date | Changes
 ---|---|---
-1.0 | 2001-12-20 | Cmdow created.
-1.1 | 2002-02-25 | Added /RUN command.
-1.2 | 2002-10-29 | Fixed issue caused when conole windows have no title. Enhance /AT feature to restore an activated window if it was minimized.
-1.3 | 2002-11-20 | Added /FS and /WM options to allow switching between full screen mode and window mode.
-1.4 | 2002-11-07 | Added /TOP and /NOT options to allow the setting/clearing of windows 'always on top'. Fixed argument parsing bug for /MOV and /REN options.
-1.4.1 | 2003-05-14 | Cmdow can now rename the console window that launched it. Previously the title would revert when Cmdow exited.
-1.4.2 | 2003-08-18 | /UM seperseded by /UW switch. See FAQ's for details.
-1.4.3 | 2004-12-19 | Fixed bug where renaming the current console window would fail if the new caption title contained whitespace.
-1.4.4 | 2014-11-08 | Cmdow is now open source software released under the MIT license.
-1.4.7 | 2014-12-29 | Wildcards can now be used to filter window captions. Also now possible to perform actions on multiple windows. Handle display is extended to eight digits. Level is dynamically sized. Class name is dynamically sized. Newlines in the caption are converted to underscore. Sizes are based on the entire window list, not just what is displayed. Help pages updated. Internally: Remove process name length test, as WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted some if/else assignments for ternary operator.
 1.4.8 | 2014-12-30 | Help page typos corrected. Output can handle 5-digit PIDs.
+1.4.7 | 2014-12-29 | Wildcards can now be used to filter window captions. Also now possible to perform actions on multiple windows. Handle display is extended to eight digits. Level is dynamically sized. Class name is dynamically sized. Newlines in the caption are converted to 1.4.4 | 2014-11-08 | Cmdow is now open source software released under the MIT license.
+1.4.3 | 2004-12-19 | Fixed bug where renaming the current console window would fail if the new caption title contained whitespace.
+underscore. Sizes are based on the entire window list, not just what is displayed. Help pages updated. Internally: Remove process name length test, as WideCharToMultiByte already restricts it. Combined multiple printfs. Substituted some if/else assignments for ternary operator.
+1.4.2 | 2003-08-18 | /UM seperseded by /UW switch. See FAQ's for details.
+1.4.1 | 2003-05-14 | Cmdow can now rename the console window that launched it. Previously the title would revert when Cmdow exited.
+1.4 | 2002-11-07 | Added /TOP and /NOT options to allow the setting/clearing of windows 'always on top'. Fixed argument parsing bug for /MOV and /REN options.
+1.3 | 2002-11-20 | Added /FS and /WM options to allow switching between full screen mode and window mode.
+1.2 | 2002-10-29 | Fixed issue caused when conole windows have no title. Enhance /AT feature to restore an activated window if it was minimized.
+1.1 | 2002-02-25 | Added /RUN command.
+1.0 | 2001-12-20 | Cmdow created.
 
 ## Copyright and License<a name="copyright-and-license"></a>
 
