@@ -40,14 +40,14 @@
 <a id="is-cmdow-malware" class="anchor" href="#is-cmdow-malware" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Is Cmdow Malware?<a name="is-cmdow-malware"></a>
 </h2>
 
-<p><strong>Of course not!</strong> However, not everyone agrees... One of Cmdow's many features allows the user to hide program windows which has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan<sup><a href="#trojan">†</a></sup>. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.</p>
+<p><strong>Of course not!</strong> However, not everyone agrees... One of Cmdow's many features allow the user to hide program windows which has led to 40% of anti-virus vendors classifying Cmdow as anything from a hacking tool to a trojan<sup><a href="#trojan">†</a></sup>. On the other hand, 60% of anti-virus vendors regard Cmdow as completely safe.</p>
 
-<p>You can view the anti-virus scan results yourself. Download the latest version of Cmdow, extract the contents of the zip file and upload cmdow.exe to <a href="https://virustotal.com/">VirusTotal</a>. You'll end up at  a page like this: 
+<p>You can view the anti-virus scan results yourself. Download and extract the latest version of the Cmdow archive, then upload cmdow.exe to <a href="https://virustotal.com/">VirusTotal</a>. You'll end up at a page like this: 
 <a href="https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/">https://virustotal.com/en/file/767b877e735c425bf05c34683356abfde4070b092f17a4741ea5ac490611f3de/analysis/</a> (note, the long hexadecimal string in the URL matches the <a href="https://en.wikipedia.org/wiki/Sha1sum">SHA256 checksum</a> of cmdow.exe, v1.4.8 in this instance).</p>
 
-<p>Obviously, if you have any doubts about the safety of Cmdow then don't use it or audit the source code yourself. Auditing shouldn't be too difficult as the code is self explanatory with liberal comments. It compiles without errors or warnings using the free <a href="http://www.codeblocks.org/">Code::Blocks</a> IDE. There's even a Code::Blocks project file (<a href="https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp">cmdow.cbp</a>) included in the Cmdow download.</p>
+<p>Obviously, if you have any doubts about the safety of Cmdow then don't use it or audit the source code yourself. Auditing should be fairly straightforward as the code is self explanatory with liberal comments and there is no assembly or binary blobs. It compiles without errors or warnings using the free <a href="http://www.codeblocks.org/">Code::Blocks</a> IDE. There is even a Code::Blocks project file (<a href="https://github.com/ritchielawrence/cmdow/blob/master/cmdow.cbp">cmdow.cbp</a>) included in the Cmdow download.</p>
 
-<p><sup><a name="trojan">†</a></sup> Ten vendors actually regard passing 0 to the Windows API function <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549%28v=vs.85%29.aspx">ShowWindowAsync</a> as enough to create a trojan!</p>
+<p><sup><a name="trojan">†</a></sup> Ten vendors actually regard passing a zero to the Windows API function <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms633549%28v=vs.85%29.aspx">ShowWindowAsync</a> as enough to create a trojan!</p>
 
 <h2>
 <a id="synopsis" class="anchor" href="#synopsis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Synopsis<a name="synopsis"></a>
