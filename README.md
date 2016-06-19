@@ -1,5 +1,3 @@
-# Cmdow
-
 ## Table of Contents
 
 * [Is Cmdow Malware?](#is-cmdow-malware)
