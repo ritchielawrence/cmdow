@@ -317,6 +317,14 @@ echo Here we are again, back in our maximised window!
 
 ## FAQs<a name="faqs"></a>
 
+How can I filter on image name and caption?
+
+> See [issue 5](https://github.com/ritchielawrence/cmdow/issues/5).
+
+How can I filter on multiple window properties, for example, visible explorer.exe windows wider than 1000 pixels?
+
+> See [issue 4](https://github.com/ritchielawrence/cmdow/issues/4).
+
 How can I disable or hide the desktop?
 
 > Running Cmdow without any options lists all windows. The window at the top of the list is the desktop window only as far Windows is concerned (and has a level of 0). However, the window that you and I know as the desktop is found at the end of the list. It will typically be the last window listed with a level of 1 (and by default its caption is "Program Manager").
