@@ -112,6 +112,8 @@ possible. Improper use may cause unexpected results and system instability.
 
 <pre>
   CMDOW window {[/ACT] [/INA] [/ENA] [/DIS] [/VIS] [/HID] [/MIN] [/MAX] [/RES]}
+  CMDOW window {[/REN newcaption] [/TOP] [/NOT] [/MOV left top]
+        [/SIZ width height] [/CLS] [/END]}
 
   window  Window to act on. Specify a window by its handle (in hex format, eg
           0x1A0142) or caption (window title). Caption is case insensitive.
@@ -139,6 +141,31 @@ possible. Improper use may cause unexpected results and system instability.
           minimized window was originally maximized, then /RES will maximize
           the window. Applying /RES a second time, will restore the window to
           the size and position it was before it was maximized.
+  /REN    Renames the caption of the specified window to the caption specified
+          after /REN. Use double quotes for captions containing whitespace.
+  /TOP    Makes the specified window always on top. It will remain on top even
+          when another window is activated. If two or more windows have this
+          attribute set, the topmost window will be that which had the
+          attribute set first.
+  /NOT    Makes window not always on top. This is the normal setting for most
+          windows.
+  /MOV    Moves the specified window. The left and top arguments specify the
+          new position of the left top corner of the window. For level one
+          windows this is relative to the desktop, and for child windows this
+          is relative to its parent window. Level one windows can be moved off
+          the screen using negative coords or coords greater than the desktop
+          size. You should not move a minimized or maximized window without
+          first restoring it.
+  /SIZ    Resizes the specified window. The width and height arguments specify
+          the new absolute width and height. In general, windows cannot be made
+          smaller using /SIZ than they could if using conventional methods. You
+          should not resize a minimized or maximized window without first
+          restoring it.
+  /CLS    Politely asks the specified window to close. Most applications will
+          respond to this request, although some may display a message box
+          asking you what to do with unsaved work.
+  /END    Kills the process associated with the specified window, the result is
+          all windows with the same Pid are also killed. Use very carefully.
 
   If more than one window matches the specified caption, CMDOW only acts on the
   first one. To override this add the /DBM (Don't Blame Me) switch - DANGEROUS.
