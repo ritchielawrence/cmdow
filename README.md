@@ -1,4 +1,4 @@
-## Table of Contents
+## Table of Content
 
 * [Is Cmdow Malware?](#is-cmdow-malware)
 * [Synopsis](#synopsis)
